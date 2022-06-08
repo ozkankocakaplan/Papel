@@ -9,15 +9,8 @@ import Header from '../components/Header'
 import QuickProcess, { QuickProcessHeader } from '../components/QuickProcess'
 import LastAction from '../components/LastAction'
 import MyCards from '../components/MyCards'
-import BottomSheet from '@gorhom/bottom-sheet';
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 export default function Home(props: any) {
-    // const bottomSheetRef = useRef<BottomSheet>(null);
-    const snapPoints = useMemo(() => ['25%', '50%'], []);
-    const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
-    }, []);
     const [isItVerifed, setIsItVerifed] = useState<boolean>(true)
     useEffect(() => {
         props.navigation.addListener('focus', () => {
