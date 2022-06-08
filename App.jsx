@@ -9,7 +9,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{
-        headerShown: false
+        headerShown: false,
       }}>
         <Stack.Screen name='TabNavigator' component={TabNavigator} />
         <Stack.Screen name='Notification' component={Notifications} />

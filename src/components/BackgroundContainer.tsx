@@ -16,7 +16,6 @@ export default function BackgroundContainer(props: ContainerProps) {
 
 const styles = StyleSheet.create({
     bgContainer: {
-
         height: Dimensions.get('screen').height,
         width: Dimensions.get('screen').width,
     }

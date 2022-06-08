@@ -52,7 +52,7 @@ export default function Notifications(props: any) {
                 leftonPress={() => props.navigation.goBack()}
                 rightonPress={() => console.log("settings")}
             />
-            <Container>
+            <Container valueHeight={1.16}>
                 {
                     notificationsList.length > 0 ?
                         <>

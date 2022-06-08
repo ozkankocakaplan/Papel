@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     },
     profilButton: {
         position: 'absolute',
-        left: 20,
+        left: 15,
         bottom: 10,
         height: 35,
         width: 35,
@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
     notificationButon: {
         position: 'absolute',
         bottom: 15,
-        right: 10
+        right: 15
     }
 })
