@@ -8,6 +8,13 @@ export default function Container(props: { children: React.ReactNode, valueHeigh
         </View>
     )
 }
+export const Notch = () => {
+    return (
+        <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+            <View style={{ height: 4, backgroundColor: '#e7e7e7', borderRadius: 2, width: 40 }}></View>
+        </View>
+    )
+}
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',

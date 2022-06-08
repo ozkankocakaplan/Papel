@@ -1,43 +1,103 @@
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { StyleSheet, TouchableOpacity, View, Text, ScrollView, Image } from 'react-native'
+import { faCircleMinus, faInfoCircle, faPaperPlane, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import React, { useEffect } from 'react'
-import { StyleSheet, TouchableOpacity, View, Text, ScrollView, Image, Dimensions } from 'react-native'
+
 import BackgroundContainer from '../components/BackgroundContainer'
-import Container from '../components/Container'
+import Container, { Notch } from '../components/Container'
 import Header from '../components/Header'
+import QuickProcess, { QuickProcessHeader } from '../components/QuickProcess'
+import LastAction from '../components/LastAction'
+import MyCards from '../components/MyCards'
+import BottomSheet from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 export default function Home(props: any) {
+    // const bottomSheetRef = useRef<BottomSheet>(null);
+    const snapPoints = useMemo(() => ['25%', '50%'], []);
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log('handleSheetChanges', index);
+    }, []);
+    const [isItVerifed, setIsItVerifed] = useState<boolean>(true)
     useEffect(() => {
         props.navigation.addListener('focus', () => {
             // do something
         })
     }, [])
-
+    const ShortCut = () => {
+        return (
+            <View style={styles.shortCutContainer}>
+                <TouchableOpacity
+                    activeOpacity={.7}
+                    style={styles.shortCutButon}>
+                    <FontAwesomeIcon icon={faCircleMinus} color="#fff" size={20} />
+                    <Text style={styles.shortCutButonText}>Çek</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={.7}
+                    style={styles.shortCutButon}>
+                    <FontAwesomeIcon icon={faPaperPlane} color="#fff" size={20} />
+                    <Text style={styles.shortCutButonText}>Gönder</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={.7}
+                    style={styles.shortCutButon}>
+                    <FontAwesomeIcon icon={faPlusCircle} color="#fff" size={20} />
+                    <Text style={styles.shortCutButonText}>Talep Et</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={.7}
+                    style={styles.shortCutButon}>
+                    <FontAwesomeIcon icon={faPlusCircle} color="#fff" size={20} />
+                    <Text style={styles.shortCutButonText}>Yatır</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
     return (
         <BackgroundContainer>
             <Header goNotification={() => props.navigation.navigate('Notification')} />
             <ScrollView contentContainerStyle={{ flex: 1 }} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-                <UnverifedAccountInfo />
-                <BalanceInfo balance={"20,00"} body="TOPLAM BAKİYE" />
-                <NotFoundCardInfo />
+                {
+                    isItVerifed ?
+                        <View style={{ marginTop: 10 }}>
+                            <BalanceInfo balance={"1.136,97"} body="TOPLAM BAKİYE" />
+                            <ShortCut />
+                            <MyCards />
+                        </View>
+                        :
+                        <>
+                            <UnverifedAccountInfo />
+                            <BalanceInfo balance={"20,00"} body="TOPLAM BAKİYE" />
+                            <NotFoundCardInfo />
+                        </>
+                }
             </ScrollView>
-            <Container valueHeight={2.3}>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-                    <Image source={require('../../images/creditcard.png')} />
-                    <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#141414', marginTop: 30, marginBottom: 70, }}>Henüz burada gösterilecek bir şey yok!</Text>
-                </View>
-            </Container>
+            {
+                isItVerifed ?
+                    <Container valueHeight={2.2}>
+                        <Notch />
+                        <QuickProcessHeader />
+                        <ScrollView
+                            contentInset={{ bottom: 50 }} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                            <QuickProcess />
+                            <LastAction />
+                        </ScrollView>
+                    </Container>
+                    :
+                    <Container valueHeight={2.3}>
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+                            <Image source={require('../../images/creditcard.png')} />
+                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#141414', marginTop: 30, marginBottom: 70, }}>Henüz burada gösterilecek bir şey yok!</Text>
+                        </View>
+                    </Container>
+
+            }
+
         </BackgroundContainer >
     )
 }
-export const BalanceInfo = (props: { balance: string, body: string }) => {
-    return (
-        <View style={balanceStyles.container}>
-            <Text style={balanceStyles.balanceText}>{`₺${props.balance}`}</Text>
-            <Text style={balanceStyles.balanceInfoText}>{props.body}</Text>
-        </View>
-    )
-}
+
 const UnverifedAccountInfo = () => {
     return (
         <View style={styles.unverifedAccountInfoContainer}>
@@ -70,28 +130,8 @@ const NotFoundCardInfo = () => {
     )
 }
 
-const balanceStyles = StyleSheet.create({
-    container: {
-        height: 55,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column'
-    },
-    balanceText: {
-        fontSize: 30,
-        marginTop: 5,
-        color: '#fff',
-        fontWeight: 'bold'
-    },
-    balanceInfoText: {
-        fontSize: 14,
-        fontWeight: '500',
-        lineHeight: 20,
-        color: '#BDA7F5',
-        textTransform: 'uppercase',
 
-    }
-});
+
 const styles = StyleSheet.create({
     notFoundCardInfoContainer: {
         height: 85,
@@ -164,5 +204,55 @@ const styles = StyleSheet.create({
         lineHeight: 16,
         color: '#fff',
         fontWeight: '400'
-    }
+    },
+    shortCutContainer: {
+        flexDirection: 'row',
+        margin: 15,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    shortCutButon: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column'
+    },
+    shortCutButonText: {
+        marginTop: 10,
+        fontSize: 16,
+        color: '#fff',
+        fontWeight: 'bold'
+    },
+
 })
+
+export const BalanceInfo = (props: { balance: string, body: string }) => {
+    return (
+        <View style={balanceStyles.container}>
+            <Text style={balanceStyles.balanceText}>{`₺${props.balance}`}</Text>
+            <Text style={balanceStyles.balanceInfoText}>{props.body}</Text>
+        </View>
+    )
+}
+const balanceStyles = StyleSheet.create({
+    container: {
+        height: 55,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column'
+    },
+    balanceText: {
+        fontSize: 30,
+        marginTop: 5,
+        color: '#fff',
+        fontWeight: 'bold'
+    },
+    balanceInfoText: {
+        fontSize: 14,
+        fontWeight: '500',
+        lineHeight: 20,
+        color: '#BDA7F5',
+        textTransform: 'uppercase',
+
+    }
+});

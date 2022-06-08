@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import TabNavigator from './src/components/TabNavigator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Notifications from './src/screens/Notifications';
-
 const Stack = createNativeStackNavigator();
 const App = () => {
   return (
