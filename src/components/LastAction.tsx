@@ -19,7 +19,7 @@ export default function LastAction() {
                             key={item}
                             userName='Cansu Ural'
                             processName='Giden Transfer'
-                            processPrice={100}
+                            processPrice={"100,00"}
                             processDate={new Date()}
                             processType={true}
                         />
@@ -30,11 +30,11 @@ export default function LastAction() {
         </View>
     )
 }
-const ActionCard = (props: { userName: string, processName: string, processPrice: number, processType: boolean, processDate: Date }) => {
+const ActionCard = (props: { userImage?: string, userName: string, processName: string, processPrice: any, processType: boolean, processDate: Date }) => {
     return (
         <View style={styles.cardContainer}>
             <View style={styles.userInfo}>
-                <Image source={require('../../images/UserPhoto.png')} style={{ height: 40, width: 40 }} />
+                <Image source={props.userImage != null ? { uri: props.userImage } : require('../../images/UserPhoto.png')} style={{ height: 40, width: 40 }} />
                 <View style={{ flexDirection: 'column', justifyContent: 'space-around', marginLeft: 10 }}>
                     <Text style={styles.userNameText}>{props.userName}</Text>
                     <Text style={styles.userProcessText}>{props.processName}</Text>
@@ -48,7 +48,6 @@ const ActionCard = (props: { userName: string, processName: string, processPrice
     )
 }
 const styles = StyleSheet.create({
-
     lastActionText: {
         fontSize: 18,
         fontWeight: 'bold',

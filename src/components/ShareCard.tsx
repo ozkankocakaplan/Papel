@@ -66,8 +66,7 @@ const ShareCard: React.FC<SharedCardProps> = ({ isSuccess, cardType, isPaid, tit
                 cardType === 'MyInvitations' ?
                     isPaid ?
                         <Button
-                            onPress={() => console.log("öde")}
-                            activeOpacity={.7}
+                            activeOpacity={1}
                             textStyle={{ color: '#48BF24' }}
                             icon={faCheckCircle}
                             iconProperty={{ size: 17, color: '#48BF24' }}

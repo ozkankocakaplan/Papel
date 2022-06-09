@@ -1,10 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import TabNavigator from './src/components/TabNavigator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import TabNavigator from './src/components/TabNavigator';
 import Notifications from './src/screens/Notifications';
-import { BackgroundBlur } from './src/components/BackgroundContainer';
+import ShareDetails from './src/screens/ShareDetails';
 const Stack = createNativeStackNavigator();
+
 const App = () => {
   return (
     <NavigationContainer>
@@ -13,6 +15,7 @@ const App = () => {
       }}>
         <Stack.Screen name='TabNavigator' component={TabNavigator} />
         <Stack.Screen name='Notification' component={Notifications} />
+        <Stack.Screen name='ShareDetails' component={ShareDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );

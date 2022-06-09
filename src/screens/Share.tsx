@@ -122,15 +122,15 @@ export default function Share(props: any) {
 
                 {
                     selectedMenu === 0 ?
-                        <MyCreated />
-                        : <MyInvitations />
+                        <MyCreated navigation={props.navigation} count={5} />
+                        : <MyInvitations count={3} />
                 }
             </Container>
         </BackgroundContainer >
     )
 }
 
-const MyCreated = () => {
+const MyCreated = (props: { navigation: any, count: number }) => {
     const [selectedFiltre, setSetSelectedFiltre] = useState<string>(''); // Filtre
     const [searchText, setSearchText] = useState<string>('');//SearchText
     return (
@@ -149,7 +149,7 @@ const MyCreated = () => {
                         data={FilterMenuData} />
                 </View>
                 <View style={creationStyles.notificationCountContainer}>
-                    <Text style={creationStyles.notificationText}><Text style={creationStyles.notificationCountText}>5 adet</Text> hareket listeleniyor.</Text>
+                    <Text style={creationStyles.notificationText}><Text style={creationStyles.notificationCountText}>{props.count} adet</Text> hareket listeleniyor.</Text>
                 </View>
                 <Button
                     title='Yeni Bölüş Oluştur'
@@ -167,7 +167,7 @@ const MyCreated = () => {
                     <ShareCard
                         cardType='MyCreated'
                         isSuccess={false}
-                        onPress={() => console.log("a")}
+                        onPress={() => props.navigation.navigate('ShareDetails', { shareID: 1 })}
                         activeOpacity={.7}
                         title="Altın Günü Yemeği"
                         totalBalance={"381,00"}
@@ -178,7 +178,7 @@ const MyCreated = () => {
                     <ShareCard
                         cardType='MyCreated'
                         isSuccess={true}
-                        onPress={() => console.log("a")}
+                        onPress={() => props.navigation.navigate('ShareDetails', { shareID: 2 })}
                         activeOpacity={.7}
                         title="Altın Günü Yemeği"
                         totalBalance={"381,00"}
@@ -191,7 +191,7 @@ const MyCreated = () => {
         </View>
     )
 }
-const MyInvitations = () => {
+const MyInvitations = (props: { count: number }) => {
     const [selectedFiltre, setSetSelectedFiltre] = useState<string>(''); // Filtre
     const [searchText, setSearchText] = useState<string>('');//SearchText
     return (
@@ -210,7 +210,7 @@ const MyInvitations = () => {
                         data={FilterMenuData} />
                 </View>
                 <View style={creationStyles.notificationCountContainer}>
-                    <Text style={creationStyles.notificationText}><Text style={creationStyles.notificationCountText}>3 adet</Text> bölüş listeleniyor.</Text>
+                    <Text style={creationStyles.notificationText}><Text style={creationStyles.notificationCountText}>{props.count} adet</Text> bölüş listeleniyor.</Text>
                 </View>
             </View>
             <View style={{ flex: 6, zIndex: -1, elevation: -1, position: 'relative' }}>
