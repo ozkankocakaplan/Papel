@@ -88,13 +88,10 @@ const doubleButonstyles = StyleSheet.create({
 })
 //#endregion
 
-const FilterMenuData = ["Fiyat", "Tarih"]
+const FilterMenuData = ["Tümü", "Fiyat", "Tarih"]
 
 export default function Share(props: any) {
-    const [selectedFiltre, setSetSelectedFiltre] = useState<string>('')
-    const [selectedMenu, setSelectedMenu] = useState<number>(0);
-    const [searchText, setSearchText] = useState<string>('')
-
+    const [selectedMenu, setSelectedMenu] = useState<number>(0);//0: Oluşturduklarım, 1: Davet Edildiklerim
     const DoubleButonContainer = () => {
         return (
             <View style={doubleButonstyles.doubleButonContainer}>
@@ -122,95 +119,10 @@ export default function Share(props: any) {
             />
             <Container valueHeight={1.16}>
                 <DoubleButonContainer />
+
                 {
                     selectedMenu === 0 ?
-                        <View style={creationStyles.container}>
-                            <View style={{ flex: 1, padding: 5 }}>
-                                <View style={creationStyles.filtreContainer}>
-                                    <View style={{ flex: 1, marginRight: 15, }}>
-                                        <FontAwesomeIcon style={creationStyles.searchIcon} icon={faSearch} size={15} />
-                                        <TextInput
-                                            onChangeText={(text) => setSearchText(text)}
-                                            value={searchText}
-                                            style={creationStyles.searchText} placeholder="Ara" />
-                                    </View>
-                                    <DropDown selectedData={selectedFiltre}
-                                        handleChangeData={(data) => setSetSelectedFiltre(data)}
-                                        data={FilterMenuData} />
-                                </View>
-                                <View style={creationStyles.notificationCountContainer}>
-                                    <Text style={creationStyles.notificationText}><Text style={creationStyles.notificationCountText}>5 adet</Text> hareket listeleniyor.</Text>
-                                </View>
-                                <Button
-                                    title='Yeni Bölüş Oluştur'
-                                    activeOpacity={.7}
-                                    icon={faPlus} iconProperty={{ size: 20, color: "#3D21A2" }}
-                                />
-                            </View>
-                            <View style={{ flex: 3, zIndex: -1, elevation: -1, position: 'relative' }}>
-                                <ScrollView
-                                    contentInset={{ bottom: 70 }}
-                                    style={{ padding: 5 }}
-                                    showsHorizontalScrollIndicator={false}
-                                    showsVerticalScrollIndicator={false}
-                                >
-                                    <ShareCard
-                                        onPress={() => console.log("a")}
-                                        activeOpacity={.7}
-                                        title="Altın Günü Yemeği"
-                                        totalBalance={"381,00"}
-                                        availableBalance="127,00"
-                                        progressBar={.6}
-                                        isPaid={false}
-                                    />
-                                    <ShareCard
-                                        onPress={() => console.log("a")}
-                                        activeOpacity={.7}
-                                        title="Nisan Ayı Netflix"
-                                        totalBalance={"381,00"}
-                                        availableBalance="127,00"
-                                        progressBar={1}
-                                        isPaid={true}
-                                    />
-                                    <ShareCard
-                                        onPress={() => console.log("a")}
-                                        activeOpacity={.7}
-                                        title="Yılbaşı Yemeği"
-                                        totalBalance={"381,00"}
-                                        availableBalance="127,00"
-                                        progressBar={1}
-                                        isPaid={true}
-                                    />
-                                    <ShareCard
-                                        onPress={() => console.log("a")}
-                                        activeOpacity={.7}
-                                        title="Yılbaşı Yemeği"
-                                        totalBalance={"381,00"}
-                                        availableBalance="127,00"
-                                        progressBar={1}
-                                        isPaid={true}
-                                    />
-                                    <ShareCard
-                                        onPress={() => console.log("a")}
-                                        activeOpacity={.7}
-                                        title="Yılbaşı Yemeği"
-                                        totalBalance={"381,00"}
-                                        availableBalance="127,00"
-                                        progressBar={1}
-                                        isPaid={true}
-                                    />
-                                    <ShareCard
-                                        onPress={() => console.log("a")}
-                                        activeOpacity={.7}
-                                        title="Yılbaşı Yemeği"
-                                        totalBalance={"381,00"}
-                                        availableBalance="127,00"
-                                        progressBar={1}
-                                        isPaid={true}
-                                    />
-                                </ScrollView>
-                            </View>
-                        </View>
+                        <MyCreated />
                         : <MyInvitations />
                 }
             </Container>
@@ -218,15 +130,125 @@ export default function Share(props: any) {
     )
 }
 
-
-
-
-const MyInvitations = () => {
+const MyCreated = () => {
+    const [selectedFiltre, setSetSelectedFiltre] = useState<string>(''); // Filtre
+    const [searchText, setSearchText] = useState<string>('');//SearchText
     return (
-        <View>
-
+        <View style={creationStyles.container}>
+            <View style={{ flex: 1, padding: 5 }}>
+                <View style={creationStyles.filtreContainer}>
+                    <View style={{ flex: 1, marginRight: 15, }}>
+                        <FontAwesomeIcon style={creationStyles.searchIcon} icon={faSearch} size={15} />
+                        <TextInput
+                            onChangeText={(text) => setSearchText(text)}
+                            value={searchText}
+                            style={creationStyles.searchText} placeholder="Ara" />
+                    </View>
+                    <DropDown selectedData={selectedFiltre}
+                        handleChangeData={(data) => setSetSelectedFiltre(data)}
+                        data={FilterMenuData} />
+                </View>
+                <View style={creationStyles.notificationCountContainer}>
+                    <Text style={creationStyles.notificationText}><Text style={creationStyles.notificationCountText}>5 adet</Text> hareket listeleniyor.</Text>
+                </View>
+                <Button
+                    title='Yeni Bölüş Oluştur'
+                    activeOpacity={.7}
+                    icon={faPlus} iconProperty={{ size: 20, color: "#3D21A2" }}
+                />
+            </View>
+            <View style={{ flex: 3, zIndex: -1, elevation: -1, position: 'relative' }}>
+                <ScrollView
+                    contentInset={{ bottom: 70 }}
+                    style={{ padding: 5 }}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                >
+                    <ShareCard
+                        cardType='MyCreated'
+                        isSuccess={false}
+                        onPress={() => console.log("a")}
+                        activeOpacity={.7}
+                        title="Altın Günü Yemeği"
+                        totalBalance={"381,00"}
+                        availableBalance="127,00"
+                        progressBar={.6}
+                        isPaid={false}
+                    />
+                    <ShareCard
+                        cardType='MyCreated'
+                        isSuccess={true}
+                        onPress={() => console.log("a")}
+                        activeOpacity={.7}
+                        title="Altın Günü Yemeği"
+                        totalBalance={"381,00"}
+                        availableBalance="127,00"
+                        progressBar={.6}
+                        isPaid={true}
+                    />
+                </ScrollView>
+            </View>
         </View>
     )
 }
+const MyInvitations = () => {
+    const [selectedFiltre, setSetSelectedFiltre] = useState<string>(''); // Filtre
+    const [searchText, setSearchText] = useState<string>('');//SearchText
+    return (
+        <View style={creationStyles.container}>
+            <View style={{ flex: 1, padding: 5 }}>
+                <View style={creationStyles.filtreContainer}>
+                    <View style={{ flex: 1, marginRight: 15, }}>
+                        <FontAwesomeIcon style={creationStyles.searchIcon} icon={faSearch} size={15} />
+                        <TextInput
+                            onChangeText={(text) => setSearchText(text)}
+                            value={searchText}
+                            style={creationStyles.searchText} placeholder="Ara" />
+                    </View>
+                    <DropDown selectedData={selectedFiltre}
+                        handleChangeData={(data) => setSetSelectedFiltre(data)}
+                        data={FilterMenuData} />
+                </View>
+                <View style={creationStyles.notificationCountContainer}>
+                    <Text style={creationStyles.notificationText}><Text style={creationStyles.notificationCountText}>3 adet</Text> bölüş listeleniyor.</Text>
+                </View>
+            </View>
+            <View style={{ flex: 6, zIndex: -1, elevation: -1, position: 'relative' }}>
+                <ScrollView
+                    contentInset={{ bottom: 70 }}
+                    style={{ padding: 5 }}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                >
+                    <ShareCard
+                        cardType='MyInvitations'
+                        isSuccess={false}
+                        onPress={() => console.log("a")}
+                        activeOpacity={.7}
+                        title="Altın Günü Yemeği"
+                        totalBalance={"381,00"}
+                        availableBalance="127,00"
+                        progressBar={.6}
+                        isPaid={true}
+                    />
+                    <ShareCard
+                        cardType='MyInvitations'
+                        isSuccess={false}
+                        onPress={() => console.log("a")}
+                        activeOpacity={.7}
+                        title="Altın Günü Yemeği"
+                        totalBalance={"381,00"}
+                        availableBalance="127,00"
+                        progressBar={.6}
+                        isPaid={false}
+                    />
+
+                </ScrollView>
+            </View>
+        </View>
+    )
+}
+
+
 
 

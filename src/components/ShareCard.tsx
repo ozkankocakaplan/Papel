@@ -1,22 +1,26 @@
-import { faAngleRight, faCircleExclamation, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faCheckCircle, faCircleExclamation, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react'
 import { FlatList, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
 import SimpleGradientProgressbarView from 'react-native-simple-gradient-progressbar-view';
+import Button from './Button';
 import UserPhoto from './UserPhoto';
 
 interface SharedCardProps extends TouchableOpacityProps {
+    isSuccess: boolean;
     isPaid: boolean,
     title: string,
     totalBalance: any,
     availableBalance: any,
     progressBar: any,
+    cardType: 'MyInvitations' | 'MyCreated'
 
 }
-
-const ShareCard: React.FC<SharedCardProps> = ({ isPaid, title, totalBalance, availableBalance, progressBar, ...res }) => {
+//isSuccess Değişkeni MyCreated İçin Kullanılıyor False Gelirse Ödeme Tamamlanması Bekleniyor Uyarısını Gösteriyor
+//isPaid Değişkeni MyInvitations İçin Kullanılıyor False Gelirse Öde Uyarısını Gösteriyor True Gelirse Payını Ödedin
+const ShareCard: React.FC<SharedCardProps> = ({ isSuccess, cardType, isPaid, title, totalBalance, availableBalance, progressBar, ...res }) => {
     return (
-        <TouchableOpacity {...res} style={{ ...shareCardstyles.shareCard, height: !isPaid ? 190 : 150 }}>
+        <TouchableOpacity {...res} style={{ ...shareCardstyles.shareCard }}>
             <View style={shareCardstyles.cardHeader}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={shareCardstyles.shareCardHeaderTitle}>{title}</Text>
@@ -24,7 +28,7 @@ const ShareCard: React.FC<SharedCardProps> = ({ isPaid, title, totalBalance, ava
                 </View>
                 <Text style={shareCardstyles.shareCardHeaderPrice}>₺{availableBalance}</Text>
             </View>
-            {isPaid ? <SimpleGradientProgressbarView
+            {isSuccess ? <SimpleGradientProgressbarView
                 style={shareCardstyles.progressBar}
                 fromColor="#48BF24"
                 toColor="#48BF24"
@@ -52,12 +56,34 @@ const ShareCard: React.FC<SharedCardProps> = ({ isPaid, title, totalBalance, ava
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => <UserPhoto activeOpacity={.7} isPaid={item} local={true} />}
             />
-            {!isPaid && <View style={shareCardstyles.orderInfo}>
+            {!isSuccess && cardType === 'MyCreated' && <View style={shareCardstyles.orderInfo}>
                 <View style={{ paddingLeft: 5 }}>
                     <FontAwesomeIcon icon={faCircleExclamation} color="#934C29" />
                 </View>
                 <Text style={shareCardstyles.orderInfoText}>Ödemelerin Tamamlanması Bekleniyor!</Text>
             </View>}
+            {
+                cardType === 'MyInvitations' ?
+                    isPaid ?
+                        <Button
+                            onPress={() => console.log("öde")}
+                            activeOpacity={.7}
+                            textStyle={{ color: '#48BF24' }}
+                            icon={faCheckCircle}
+                            iconProperty={{ size: 17, color: '#48BF24' }}
+                            butonStyle={{ height: 35, backgroundColor: '#CCF8A7', marginTop: 10 }}
+                            title="Payını Ödedin"
+                        />
+                        :
+                        <Button
+                            onPress={() => console.log("öde")}
+                            activeOpacity={.7}
+                            textStyle={{ color: '#fff' }}
+                            butonStyle={{ height: 35, backgroundColor: '#48BF24', marginTop: 10 }}
+                            title="₺55,90 Öde"
+                        />
+                    : null
+            }
         </TouchableOpacity>
     )
 }
@@ -105,7 +131,8 @@ const shareCardstyles = StyleSheet.create({
         backgroundColor: '#FFECCD',
         height: 30,
         flexDirection: 'row',
-        padding: 5
+        padding: 5,
+        marginTop: 10,
     },
     orderInfoText: {
         color: '#934C29',

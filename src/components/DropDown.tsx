@@ -12,7 +12,16 @@ const DropDown = (props: { data: any, selectedData: any, handleChangeData: (item
                 onPress={() => setDropDownShow(!dropDownShow)}
                 activeOpacity={.7}
                 style={styles.filtreDropDown}>
-                <Text style={styles.filtreText}>Filtrele</Text>
+                {
+                    props.selectedData.length === 0 ?
+                        <Text style={styles.filtreText}>Filtrele</Text>
+                        :
+                        <View style={{ flexDirection: 'column' }}>
+                            <Text style={styles.selectedText1}>Filtrele</Text>
+                            <Text style={styles.selectedText2}>{props.selectedData}</Text>
+                        </View>
+                }
+
                 <FontAwesomeIcon style={styles.filtreIcon} color="#3D21A2" icon={faAngleRight} />
             </TouchableOpacity>
             {
@@ -22,7 +31,13 @@ const DropDown = (props: { data: any, selectedData: any, handleChangeData: (item
                         props.data.map((item: any) => {
                             return <TouchableOpacity
                                 onPress={() => {
-                                    props.handleChangeData(item)
+                                    if (props.selectedData === item) {
+                                        props.handleChangeData('')
+                                    }
+                                    else {
+                                        props.handleChangeData(item)
+                                    }
+
                                     setDropDownShow(false);
                                 }}
                                 key={item}
@@ -91,4 +106,18 @@ const styles = StyleSheet.create({
     filtreIcon: {
         paddingRight: 40
     },
+    selectedText1: {
+        paddingLeft: 10,
+        color: '#3D21A2',
+        fontSize: 12,
+        fontWeight: '400'
+    },
+    selectedText2: {
+        paddingLeft: 10,
+        color: '#141414',
+        fontSize: 15,
+        fontWeight: '400'
+    },
+
+
 })
