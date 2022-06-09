@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { faAngleRight, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
@@ -8,11 +8,31 @@ import { AppState } from '../store'
 import { CostCard } from '../screens/ShareDetails'
 import Option from '../components/Option'
 import actionTypes from '../store/redux/actions/actionTypes'
-export default function Steps1(props: { navigation: any }) {
-    const { selectedExpense } = useSelector((state: AppState) => state.expenses);
+export default function Steps1(props: { navigation: any, handleFormCheck: (data: boolean) => void }) {
+    const { selectedExpense, shareAccount } = useSelector((state: AppState) => state.expenses);
     const dispatch = useDispatch();
 
-    const [noExpenses, setNoExpenses] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (shareAccount.accountName.length != 0 && shareAccount.accountName.length <= 52) {
+            if (!shareAccount.expenseType && selectedExpense.length != 0) {
+                props.handleFormCheck(true);
+            }
+            else {
+                if (shareAccount.expenseType) {
+                    props.handleFormCheck(true);
+                }
+                else {
+                    props.handleFormCheck(false);
+                }
+            }
+        }
+        else {
+            props.handleFormCheck(false);
+        }
+    }, [dispatch, selectedExpense, shareAccount])
+
+
     const clearExpenses = () => {
         dispatch({ type: actionTypes.CLEAR_EXPENSE })
     }
@@ -22,33 +42,19 @@ export default function Steps1(props: { navigation: any }) {
             <Text style={styles.col1Title}>Bölüş Hesabı Bilgileri</Text>
             <View>
                 <Text style={styles.inputLabel}>Bölüştür Hesabı Adı</Text>
-                <TextInput focusable={false} style={styles.textInput} />
+                <TextInput
+                    value={shareAccount.accountName}
+                    onChangeText={(text) => dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, accountName: text } })}
+                    focusable={false} style={styles.textInput} />
+                <Text style={styles.inputLength}>{`${shareAccount.accountName.length}/52`}</Text>
             </View>
-            <TouchableOpacity
-                activeOpacity={.7}
-                style={styles.moneyAccountContainer}>
-                <View style={{ flexDirection: 'column', padding: 10 }}>
-                    <Text style={styles.moneyAccountHeaderTitle}>PARANIN YATIRILACAĞI HESAP</Text>
-                    <View style={styles.moneyAccountCol1}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={styles.mainAccountText}>Ana Hesabım</Text>
-                            <Text style={styles.pnrAccountText}>PNR: {"12345678"}</Text>
-                        </View>
-                        <View>
-                            <FontAwesomeIcon size={20} color="#3D21A2" icon={faAngleRight} />
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.moneyAccountCol2}>
-                    <Text style={styles.moneyAccountLimitText}>Limit: ₺{"950,00"}</Text>
-                </View>
-            </TouchableOpacity>
+            <SelectedAccount handlePress={() => console.log("a")} />
             <Text style={styles.col2Title}>Harcama Seçimi</Text>
             {
                 selectedExpense.length === 0 ?
                     <TouchableOpacity
                         onPress={() => {
-                            setNoExpenses(false);
+                            dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, expenseType: false } })
                             props.navigation.navigate('Expenses')
                         }}
                         activeOpacity={.7}
@@ -87,21 +93,43 @@ export default function Steps1(props: { navigation: any }) {
             }
             <TouchableOpacity
                 onPress={() => {
-                    if (!noExpenses) {
+                    if (!shareAccount.expenseType) {
                         clearExpenses();
                     }
-                    setNoExpenses(!noExpenses);
-
+                    dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, expenseType: !shareAccount.expenseType } })
                 }}
                 activeOpacity={.7}
                 style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
-                <Option selected={noExpenses} extraStyle={{ marginRight: 10 }} />
+                <Option selected={shareAccount.expenseType} extraStyle={{ marginRight: 10 }} />
                 <Text style={{ fontSize: 18, fontWeight: '400', color: '#141414' }}>Harcama Yapmadan Önce Oluştur</Text>
             </TouchableOpacity>
         </View>
     )
 }
-
+export const SelectedAccount = (props: { handlePress: () => void }) => {
+    return (
+        <TouchableOpacity
+            onPress={props.handlePress}
+            activeOpacity={.7}
+            style={styles.moneyAccountContainer}>
+            <View style={{ flexDirection: 'column', padding: 10 }}>
+                <Text style={styles.moneyAccountHeaderTitle}>PARANIN YATIRILACAĞI HESAP</Text>
+                <View style={styles.moneyAccountCol1}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={styles.mainAccountText}>Ana Hesabım</Text>
+                        <Text style={styles.pnrAccountText}>PNR: {"12345678"}</Text>
+                    </View>
+                    <View>
+                        <FontAwesomeIcon size={20} color="#3D21A2" icon={faAngleRight} />
+                    </View>
+                </View>
+            </View>
+            <View style={styles.moneyAccountCol2}>
+                <Text style={styles.moneyAccountLimitText}>Limit: ₺{"950,00"}</Text>
+            </View>
+        </TouchableOpacity>
+    )
+}
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
@@ -140,8 +168,9 @@ const styles = StyleSheet.create({
         borderWidth: 1, borderColor: '#e7e7e7',
         borderRadius: 10,
         paddingTop: 15,
-        paddingLeft: 15,
+        paddingLeft: 15, paddingRight: 50,
         fontSize: 16,
+        color: '#141414',
         fontWeight: '400'
     },
     moneyAccountContainer: {
@@ -189,5 +218,13 @@ const styles = StyleSheet.create({
         borderBottomColor: '#e7e7e7', borderBottomWidth: 1,
         flexDirection: 'row',
         justifyContent: 'space-between'
+    },
+    inputLength: {
+        position: 'absolute',
+        right: 10,
+        top: 25,
+        color: '#727272',
+        fontSize: 14,
+        fontWeight: '400'
     }
 })

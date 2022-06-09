@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     }
 
 })
-const userCardStyles = StyleSheet.create({
+export const userCardStyles = StyleSheet.create({
     cardContainer: {
         height: 70,
         borderBottomColor: '#e7e7e7',
