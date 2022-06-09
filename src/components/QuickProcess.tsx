@@ -24,6 +24,7 @@ const QuickProcess = () => {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             horizontal={true}
+            contentContainerStyle={{ marginBottom: 20 }}
             data={["Para İste", "Abimden Para İste", "Ablamdan Para İste"]}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item, index }) => <RequestButonContainer request={item} key={index} />}

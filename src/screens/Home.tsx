@@ -3,15 +3,18 @@ import { StyleSheet, TouchableOpacity, View, Text, ScrollView, Image } from 'rea
 import { faCircleMinus, faInfoCircle, faPaperPlane, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
-import BackgroundContainer from '../components/BackgroundContainer'
+import BackgroundContainer, { BackgroundBlur } from '../components/BackgroundContainer'
 import Container, { Notch } from '../components/Container'
 import Header from '../components/Header'
 import QuickProcess, { QuickProcessHeader } from '../components/QuickProcess'
 import LastAction from '../components/LastAction'
 import MyCards from '../components/MyCards'
-
+import BottomSheet, { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet'
 export default function Home(props: any) {
-    const [isItVerifed, setIsItVerifed] = useState<boolean>(true)
+    const sheetRef = useRef<BottomSheet>(null);
+    const [blur, setBlur] = useState<boolean>(false);
+    const snapPoints = ["45%", "70%"];
+    const [isItVerifed, setIsItVerifed] = useState<boolean>(true);
     useEffect(() => {
         props.navigation.addListener('focus', () => {
             // do something
@@ -68,15 +71,27 @@ export default function Home(props: any) {
             </ScrollView>
             {
                 isItVerifed ?
-                    <Container valueHeight={2.2}>
-                        <Notch />
-                        <QuickProcessHeader />
-                        <ScrollView
-                            contentInset={{ bottom: 50 }} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                    <BottomSheet
+                        containerStyle={{ zIndex: 11, position: 'relative' }}
+                        ref={sheetRef}
+                        enablePanDownToClose={false}
+                        snapPoints={snapPoints}
+                        onChange={(state) => {
+                            if (state === 0) {
+                                setBlur(false)
+                            }
+                            else {
+                                setBlur(true)
+                            }
+
+                        }}
+                    >
+                        <BottomSheetView style={{ margin: 10 }} >
+                            <QuickProcessHeader />
                             <QuickProcess />
                             <LastAction />
-                        </ScrollView>
-                    </Container>
+                        </BottomSheetView>
+                    </BottomSheet>
                     :
                     <Container valueHeight={2.3}>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
@@ -86,7 +101,7 @@ export default function Home(props: any) {
                     </Container>
 
             }
-
+            {blur && <BackgroundBlur />}
         </BackgroundContainer >
     )
 }

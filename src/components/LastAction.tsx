@@ -1,39 +1,32 @@
 import React from 'react'
 import moment from 'moment-with-locales-es6'
-import { StyleSheet, View, Text, Image } from 'react-native'
+import { StyleSheet, View, Text, Image, ScrollView } from 'react-native'
 moment.locale('tr')
+const dumpData = [1, 2, 3, 4, 5, 6, 7]
 export default function LastAction() {
     return (
-        <View style={styles.container}>
+        <View>
             <Text style={styles.lastActionText}>Son Hareketler</Text>
-            <ActionCard
-                userName='Cansu Ural'
-                processName='Giden Transfer'
-                processPrice={100}
-                processDate={new Date()}
-                processType={true}
-            />
-            <ActionCard
-                userName='Cansu Ural'
-                processName='Giden Transfer'
-                processPrice={100}
-                processDate={new Date()}
-                processType={false}
-            />
-            <ActionCard
-                userName='Cansu Ural'
-                processName='Giden Transfer'
-                processPrice={100}
-                processDate={new Date()}
-                processType={true}
-            />
-            <ActionCard
-                userName='Cansu Ural'
-                processName='Giden Transfer'
-                processPrice={100}
-                processDate={new Date()}
-                processType={true}
-            />
+
+            <ScrollView
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                contentInset={{ bottom: 27 * dumpData.length }}
+            >
+                {
+                    dumpData.map((item) => {
+                        return <ActionCard
+                            key={item}
+                            userName='Cansu Ural'
+                            processName='Giden Transfer'
+                            processPrice={100}
+                            processDate={new Date()}
+                            processType={true}
+                        />
+                    })
+                }
+            </ScrollView>
+
         </View>
     )
 }
@@ -55,21 +48,17 @@ const ActionCard = (props: { userName: string, processName: string, processPrice
     )
 }
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: 20, marginBottom: 20,
-    },
+
     lastActionText: {
         fontSize: 18,
         fontWeight: 'bold',
         color: '#141414'
     },
     cardContainer: {
-        flex: 1,
         height: 70,
         borderBottomColor: '#e7e7e7',
         borderBottomWidth: 1,
-        paddingTop: 15, paddingBottom: 15,
+        paddingBottom: 15, paddingTop: 15,
         flexDirection: 'row',
     },
     userInfo: {

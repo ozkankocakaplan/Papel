@@ -5,7 +5,7 @@ export default function MyCards() {
     const CardBackground = (props: { cardNumber: string, cardBalance: number, favoriteCard: boolean }) => {
         return (
             <ImageBackground source={require('../../images/Bank.png')} resizeMode="contain"
-                style={{ height: 200, width: Dimensions.get('screen').width - 90, paddingLeft: 30, marginLeft: 25, zIndex: 2 }}>
+                style={{ height: 200, width: Dimensions.get('screen').width - 120, marginLeft: 25, zIndex: 2 }}>
                 {
                     props.favoriteCard &&
                     <View style={styles.favoriteCard}>
@@ -26,12 +26,15 @@ export default function MyCards() {
         )
     }
     return (
-        <View style={{ height: 200, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 15 }}>
+        <View style={{ height: 200, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 20 }}>
             <FlatList
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 data={[true, false]}
                 horizontal={true}
+                style={{ marginRight: 25 }}
+                bounces={false}
+                snapToInterval={Dimensions.get('screen').width}
                 renderItem={({ item }) => {
                     return <CardBackground favoriteCard={item} cardNumber='5121 **** **** 3060' cardBalance={900} />
                 }}
@@ -43,10 +46,10 @@ const styles = StyleSheet.create({
     cardFooterInfo: {
         height: 70,
         padding: 10,
-        position: 'absolute', bottom: 10,
+        position: 'absolute', bottom: 20,
         backgroundColor: '#FFF7E6',
         left: 5, right: 5,
-        width: Dimensions.get('screen').width - 100,
+        width: Dimensions.get('screen').width - 130,
         borderBottomLeftRadius: 10, borderBottomRightRadius: 10,
         flexDirection: 'column',
     },
@@ -69,7 +72,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#02BDD0',
         paddingLeft: 10, paddingRight: 10,
         position: 'absolute',
-        right: 10, top: 15,
+        right: 10, top: 25,
         borderRadius: 13, height: 30,
         justifyContent: 'center', alignItems: 'center'
     },
