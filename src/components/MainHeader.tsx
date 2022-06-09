@@ -5,19 +5,21 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 
 interface ButtonProps {
     title: string,
+    icon1?: any,
+    icon2?: any,
     leftonPress?: () => void,
     rightonPress?: () => void,
 }
 
-const MainHeader: React.FC<ButtonProps> = ({ title, leftonPress, rightonPress }) => {
+const MainHeader: React.FC<ButtonProps> = ({ title, icon1, icon2, leftonPress, rightonPress }) => {
     return (
         <View style={styles.container}>
             {leftonPress != null && <TouchableOpacity onPress={leftonPress} style={styles.iconLeftContainer}>
-                <FontAwesomeIcon icon={faAngleLeft} color={'#fff'} size={35} />
+                <FontAwesomeIcon icon={icon1 === undefined ? faAngleLeft : icon1} color={'#fff'} size={35} />
             </TouchableOpacity>}
             <Text style={styles.titleText}>{title}</Text>
             {rightonPress != null && <TouchableOpacity onPress={rightonPress} style={styles.iconRightContainer}>
-                <FontAwesomeIcon icon={faGear} color={'#fff'} size={28} />
+                <FontAwesomeIcon icon={icon2 === undefined ? faGear : icon2} color={'#fff'} size={28} />
             </TouchableOpacity>}
         </View>
     )

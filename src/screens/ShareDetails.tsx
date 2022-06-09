@@ -9,12 +9,13 @@ import Container from '../components/Container'
 import MainHeader from '../components/MainHeader'
 moment.locale("tr");
 //#region style
-const costCardStyles = StyleSheet.create({
+export const costCardStyles = StyleSheet.create({
     iconContainer: {
         justifyContent: 'center', alignItems: 'center', height: 40, width: 40,
         backgroundColor: '#f3f3f3', borderRadius: 100
     },
     container: {
+        alignItems: 'center',
         borderWidth: 1,
         borderRadius: 10,
         borderColor: '#e7e7e7',
@@ -265,7 +266,7 @@ export default function ShareDetails(props: any) {
     )
 }
 
-const CostCard = (props: { costName: string, costCategory: string[], costDate: Date, processType: boolean, processPrice: any }) => {
+export const CostCard = (props: { costName: string, costCategory: string[], costDate: Date, processType: boolean, processPrice: any }) => {
     let counter = 0;
     return (
         <View style={costCardStyles.container}>
@@ -274,7 +275,7 @@ const CostCard = (props: { costName: string, costCategory: string[], costDate: D
                     <FontAwesomeIcon icon={faShoppingBasket} />
                 </View>
                 <View style={{ flexDirection: 'column', justifyContent: 'space-around', marginLeft: 10 }}>
-                    <Text style={costCardStyles.userNameText}>{props.costName}</Text>
+                    <Text style={costCardStyles.userNameText} numberOfLines={1}>{props.costName}</Text>
                     <Text style={costCardStyles.userProcessText}>{
                         props.costCategory.map((item: string) => {
                             counter++;

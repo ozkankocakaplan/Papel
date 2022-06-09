@@ -144,7 +144,9 @@ const MyCreated = (props: { navigation: any, count: number }) => {
                             value={searchText}
                             style={creationStyles.searchText} placeholder="Ara" />
                     </View>
-                    <DropDown selectedData={selectedFiltre}
+                    <DropDown
+                        title='Filtrele'
+                        selectedData={selectedFiltre}
                         handleChangeData={(data) => setSetSelectedFiltre(data)}
                         data={FilterMenuData} />
                 </View>
@@ -152,6 +154,7 @@ const MyCreated = (props: { navigation: any, count: number }) => {
                     <Text style={creationStyles.notificationText}><Text style={creationStyles.notificationCountText}>{props.count} adet</Text> hareket listeleniyor.</Text>
                 </View>
                 <Button
+                    onPress={() => props.navigation.navigate('CreateShare')}
                     title='Yeni Bölüş Oluştur'
                     activeOpacity={.7}
                     icon={faPlus} iconProperty={{ size: 20, color: "#3D21A2" }}
@@ -205,7 +208,9 @@ const MyInvitations = (props: { count: number }) => {
                             value={searchText}
                             style={creationStyles.searchText} placeholder="Ara" />
                     </View>
-                    <DropDown selectedData={selectedFiltre}
+                    <DropDown
+                        title='Filtrele'
+                        selectedData={selectedFiltre}
                         handleChangeData={(data) => setSetSelectedFiltre(data)}
                         data={FilterMenuData} />
                 </View>

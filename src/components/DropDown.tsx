@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 
-const DropDown = (props: { data: any, selectedData: any, handleChangeData: (item: any) => void }) => {
+const DropDown = (props: { title: string, data: any, selectedData: any, handleChangeData: (item: any) => void }) => {
 
     const [dropDownShow, setDropDownShow] = useState<boolean>(false);
     return (
@@ -14,10 +14,10 @@ const DropDown = (props: { data: any, selectedData: any, handleChangeData: (item
                 style={styles.filtreDropDown}>
                 {
                     props.selectedData.length === 0 ?
-                        <Text style={styles.filtreText}>Filtrele</Text>
+                        <Text style={styles.filtreText}>{props.title}</Text>
                         :
                         <View style={{ flexDirection: 'column' }}>
-                            <Text style={styles.selectedText1}>Filtrele</Text>
+                            <Text style={styles.selectedText1}>{props.title}</Text>
                             <Text style={styles.selectedText2}>{props.selectedData}</Text>
                         </View>
                 }
@@ -61,6 +61,7 @@ export default DropDown;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    
     },
     filtreDropDown: {
         fontSize: 14,
@@ -68,7 +69,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         borderRadius: 10,
         borderWidth: 1,
-        height: 40,
         flex: 1,
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 5, borderBottomLeftRadius: 5,
         backgroundColor: '#fff',
         position: 'absolute',
-        top: 45,
+        top:45 ,
         shadowColor: 'rgba(0, 0, 0, 0.2)',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 10,

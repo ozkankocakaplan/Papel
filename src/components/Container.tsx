@@ -8,10 +8,10 @@ export default function Container(props: { children: React.ReactNode, valueHeigh
         </View>
     )
 }
-export const Notch = () => {
+export const Notch = (props: { width: number, extraStyle?: any }) => {
     return (
         <View style={{ justifyContent: 'center', alignItems: 'center', }}>
-            <View style={{ height: 4, backgroundColor: '#e7e7e7', borderRadius: 2, width: 40 }}></View>
+            <View style={[{ height: 2, backgroundColor: '#e7e7e7', borderRadius: 2, width: props.width }, props.extraStyle]}></View>
         </View>
     )
 }
