@@ -6043,6 +6043,11 @@ react-native-screens@^3.13.1:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-simple-gradient-progressbar-view@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-simple-gradient-progressbar-view/-/react-native-simple-gradient-progressbar-view-0.2.0.tgz#77dbce7555fca836d815f6644e1f23d35ed3908b"
+  integrity sha512-mqavQMhdTtb/StG/zsB844GhTNKQr3Bp+u1LTV9bU68mB/bS6VQiHh6WLfM1VPPXiAKTE1bI8i8RfKvOwrIp/A==
+
 react-native-svg@^12.3.0:
   version "12.3.0"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-12.3.0.tgz#40f657c5d1ee366df23f3ec8dae76fd276b86248"

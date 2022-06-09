@@ -1,15 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View, Text, ScrollView, Image } from 'react-native'
 import { faCircleMinus, faInfoCircle, faPaperPlane, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 import BackgroundContainer, { BackgroundBlur } from '../components/BackgroundContainer'
-import Container, { Notch } from '../components/Container'
+import Container from '../components/Container'
 import Header from '../components/Header'
 import QuickProcess, { QuickProcessHeader } from '../components/QuickProcess'
 import LastAction from '../components/LastAction'
 import MyCards from '../components/MyCards'
-import BottomSheet, { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 export default function Home(props: any) {
     const sheetRef = useRef<BottomSheet>(null);
     const [blur, setBlur] = useState<boolean>(false);
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
 
 })
 
-export const BalanceInfo = (props: { balance: string, body: string }) => {
+export const BalanceInfo = (props: { balance: any, body: string }) => {
     return (
         <View style={balanceStyles.container}>
             <Text style={balanceStyles.balanceText}>{`₺${props.balance}`}</Text>
