@@ -17,6 +17,7 @@ export const Notch = (props: { width: number, extraStyle?: any }) => {
 }
 const styles = StyleSheet.create({
     container: {
+        position: 'relative', bottom: 0, left: 0, right: 0,
         backgroundColor: '#fff',
         borderTopLeftRadius: 15, borderTopRightRadius: 15,
         padding: 10,

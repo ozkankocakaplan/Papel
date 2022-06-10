@@ -17,12 +17,20 @@ interface ShareAccount {
     currencyFormat: string,
     accountSelected: object,
 }
+interface Account {
+    accountCurrency: string,
+    accountName: string,
+    accountType: string,
+}
 export interface ExpenseState {
     selectedExpense: Array<Expense>,
     shareAccount: ShareAccount
+    account: Account
 }
+
 const defaultState: ExpenseState = {
     selectedExpense: Array<Expense>(),
+    account: { accountCurrency: '', accountName: '', accountType: '' },
     shareAccount: { accountName: '', expenseType: false, personList: Array<Person>(), totalPrice: { masked: '00,00', unmasked: null }, accountSelected: {}, currencyFormat: 'TRY' }
 }
 const expensesReducer = (state: ExpenseState = defaultState, action: any) => {
@@ -50,9 +58,14 @@ const expensesReducer = (state: ExpenseState = defaultState, action: any) => {
                 shareAccount: action.payload
             }
         }
+        case actionTypes.UPDATE_ACCOUNT: {
+            return {
+                ...state,
+                account: action.payload
+            }
+        }
         default:
             return state;
     }
-    return state;
 }
 export default expensesReducer;

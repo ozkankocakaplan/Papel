@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import BackgroundContainer from '../components/BackgroundContainer'
 import Container from '../components/Container'
 import MainHeader from '../components/MainHeader';
@@ -53,27 +53,35 @@ export default function Notifications(props: any) {
                 rightonPress={() => console.log("settings")}
             />
             <Container valueHeight={1.16}>
-                {
-                    notificationsList.length > 0 ?
-                        <>
-                            <NotificationCount count={3} />
-                            <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-                                <NotificationDate value={"11 NİSAN 2022"} />
-                                <Card process={"Gelen Transfer"} ThumpList={[1]} isItold={false} body="Certe, inquam, pertinax non recusandae itaque aiunt hanc quasi naturalem." />
-                                <Card process={"Bölüş"} ThumpList={[1, 2, 3,]} isItold={false} body="Certe, inquam, pertinax non recusandae itaque aiunt hanc quasi naturalem." />
-                                <Card process={"Bölüş"} ThumpList={[1, 2, 3,]} isItold={false} body="Lorem Ipsum bölüşü için belirlenen ₺ 1.800,00 tamamlandı." />
-                                <NotificationDate value={"9 NİSAN 2021"} />
-                                <Card process={"Para Çekimi"} ThumpList={[]} isItold={true} body="Lorem ipsum dolor sit amet, ₺ 500,00 consectetur adipiscing elit, sed do eiusmod tempor incididunt." />
-                                <Card process={"Para Çekimi"} ThumpList={[1, 2, 3]} isItold={true} body="Lorem ipsum dolor sit amet, ₺ 500,00 consectetur." />
-                                <NotificationDate value={"21 ARALIK 2020"} />
-                                <Card process={"Para Çekimi"} ThumpList={[]} isItold={true} body="Lorem ipsum dolor sit amet." />
-                            </ScrollView>
-                        </>
-                        : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Image source={require('../../images/notificationsBg.png')} />
-                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#141414', marginTop: 30 }}>Gösterilecek bir bildirim bulunmuyor!</Text>
-                        </View>
-                }
+                <View style={{ height: '90%', maxHeight: Dimensions.get('screen').height }}>
+                    {
+                        notificationsList.length > 0 ?
+                            <View style={{ flex: 1, }}>
+                                <NotificationCount count={3} />
+                                <ScrollView
+                                    nestedScrollEnabled={true}
+                                    showsHorizontalScrollIndicator={false}
+                                    showsVerticalScrollIndicator={false}>
+                                    <NotificationDate value={"11 NİSAN 2022"} />
+                                    <Card process={"Gelen Transfer"} ThumpList={[1]} isItold={false} body="Certe, inquam, pertinax non recusandae itaque aiunt hanc quasi naturalem." />
+                                    <Card process={"Bölüş"} ThumpList={[1, 2, 3,]} isItold={false} body="Certe, inquam, pertinax non recusandae itaque aiunt hanc quasi naturalem." />
+                                    <Card process={"Bölüş"} ThumpList={[1, 2, 3,]} isItold={false} body="Lorem Ipsum bölüşü için belirlenen ₺ 1.800,00 tamamlandı." />
+                                    <NotificationDate value={"9 NİSAN 2021"} />
+                                    <Card process={"Para Çekimi"} ThumpList={[]} isItold={true} body="Lorem ipsum dolor sit amet, ₺ 500,00 consectetur adipiscing elit, sed do eiusmod tempor incididunt." />
+                                    <Card process={"Para Çekimi"} ThumpList={[1, 2, 3]} isItold={true} body="Lorem ipsum dolor sit amet, ₺ 500,00 consectetur." />
+                                    <NotificationDate value={"21 ARALIK 2020"} />
+                                    <Card process={"Para Çekimi"} ThumpList={[]} isItold={true} body="Lorem ipsum dolor sit amet." />
+                                    <Card process={"Para Çekimi"} ThumpList={[]} isItold={true} body="Lorem ipsum dolor sit amet." />
+                                    <Card process={"Para Çekimi"} ThumpList={[]} isItold={true} body="Lorem ipsum dolor sit amet." />
+                                    <Card process={"Para Çekimi"} ThumpList={[]} isItold={true} body="Lorem ipsum dolor sit amet." />
+                                </ScrollView>
+                            </View>
+                            : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                <Image source={require('../../images/notificationsBg.png')} />
+                                <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#141414', marginTop: 30 }}>Gösterilecek bir bildirim bulunmuyor!</Text>
+                            </View>
+                    }
+                </View>
             </Container>
         </BackgroundContainer>
     )

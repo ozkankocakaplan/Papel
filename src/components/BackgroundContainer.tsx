@@ -23,6 +23,7 @@ export const BackgroundBlur = () => {
 }
 const styles = StyleSheet.create({
     bgContainer: {
+        zIndex: -3, elevation: -3,
         height: Dimensions.get('screen').height,
         width: Dimensions.get('screen').width,
     }

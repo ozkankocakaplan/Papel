@@ -1,112 +1,133 @@
 import React, { useEffect, useState } from 'react'
 import { faAngleRight, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { AppState } from '../store'
 import { CostCard } from '../screens/ShareDetails'
 import Option from '../components/Option'
 import actionTypes from '../store/redux/actions/actionTypes'
-export default function Steps1(props: { navigation: any, handleFormCheck: (data: boolean) => void }) {
+import Button from '../components/Button'
+import { footerButonStyles } from '../screens/CreateShare'
+import { ScrollView } from 'react-native-gesture-handler'
+export default function Steps1(props: { navigation: any, goStep: () => void }) {
     const { selectedExpense, shareAccount } = useSelector((state: AppState) => state.expenses);
     const dispatch = useDispatch();
 
 
-    useEffect(() => {
+    const goButon = () => {
         if (shareAccount.accountName.length != 0 && shareAccount.accountName.length <= 52) {
             if (!shareAccount.expenseType && selectedExpense.length != 0) {
-                props.handleFormCheck(true);
+                props.goStep();
             }
             else {
                 if (shareAccount.expenseType) {
-                    props.handleFormCheck(true);
+                    props.goStep();
                 }
                 else {
-                    props.handleFormCheck(false);
+                    // alert
                 }
             }
         }
         else {
-            props.handleFormCheck(false);
+            //alert
         }
-    }, [dispatch, selectedExpense, shareAccount])
-
-
+    }
     const clearExpenses = () => {
         dispatch({ type: actionTypes.CLEAR_EXPENSE })
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.headerTitle}>Bölüş hesabı oluşturmak için hesabı ve harcama detayını seçiniz.</Text>
-            <Text style={styles.col1Title}>Bölüş Hesabı Bilgileri</Text>
-            <View>
-                <Text style={styles.inputLabel}>Bölüştür Hesabı Adı</Text>
-                <TextInput
-                    value={shareAccount.accountName}
-                    onChangeText={(text) => {
-                        if (text.length <= 52) {
-                            dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, accountName: text } })
-                        }
-                    }}
-                    focusable={false} style={styles.textInput} />
-                <Text style={styles.inputLength}>{`${shareAccount.accountName.length}/52`}</Text>
-            </View>
-            <SelectedAccount handlePress={() => console.log("a")} />
-            <Text style={styles.col2Title}>Harcama Seçimi</Text>
-            {
-                selectedExpense.length === 0 ?
+            <ScrollView
+                key={"currentStep"}
+                showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentInset={{ bottom: 30 }}>
+                <View style={{ flex: 1 }}>
+                    <Text style={styles.headerTitle}>Bölüş hesabı oluşturmak için hesabı ve harcama detayını seçiniz.</Text>
+                    <Text style={styles.col1Title}>Bölüş Hesabı Bilgileri</Text>
+                    <View>
+                        <Text style={styles.inputLabel}>Bölüştür Hesabı Adı</Text>
+                        <TextInput
+                            value={shareAccount.accountName}
+                            onChangeText={(text) => {
+                                if (text.length <= 52) {
+                                    dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, accountName: text } })
+                                }
+                            }}
+                            focusable={false} style={styles.textInput} />
+                        <Text style={styles.inputLength}>{`${shareAccount.accountName.length}/52`}</Text>
+                    </View>
+                    <SelectedAccount handlePress={() => console.log("a")} />
+                    <Text style={styles.col2Title}>Harcama Seçimi</Text>
+                    {
+                        selectedExpense.length === 0 ?
+                            <TouchableOpacity
+                                onPress={() => {
+                                    dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, expenseType: false } })
+                                    props.navigation.navigate('Expenses')
+                                }}
+                                activeOpacity={.7}
+                                style={styles.expensesContainer}>
+                                <Text style={{ fontWeight: '400', color: '#141414', fontSize: 18 }}>Harcama Seç</Text>
+                                <FontAwesomeIcon size={20} color="#e7e7e7" icon={faAngleRight} />
+                            </TouchableOpacity>
+                            :
+                            <>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, justifyContent: 'space-between' }}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Option extraStyle={{ marginRight: 10 }} selected={true} />
+                                        <Text style={{ fontWeight: '400', color: '#141414', fontSize: 18 }}>Harcama Seç</Text>
+                                    </View>
+                                    <TouchableOpacity
+                                        onPress={clearExpenses}
+                                        activeOpacity={.7}
+                                        style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <Text style={{ color: '#D63333', fontWeight: 'bold', fontSize: 15, paddingRight: 5 }}>Kaldır</Text>
+                                        <FontAwesomeIcon icon={faCircleXmark} color="#D63333" size={18} />
+                                    </TouchableOpacity>
+                                </View>
+                                {
+                                    selectedExpense.map((item) => {
+                                        return <CostCard
+                                            key={item.id}
+                                            costCategory={item.category}
+                                            costName={item.name}
+                                            costDate={new Date()}
+                                            processPrice={"100,00"}
+                                            processType={false}
+                                        />
+                                    })
+                                }
+                            </>
+                    }
                     <TouchableOpacity
                         onPress={() => {
-                            dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, expenseType: false } })
-                            props.navigation.navigate('Expenses')
+                            if (!shareAccount.expenseType) {
+                                clearExpenses();
+                            }
+                            dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, expenseType: !shareAccount.expenseType } })
                         }}
                         activeOpacity={.7}
-                        style={styles.expensesContainer}>
-                        <Text style={{ fontWeight: '400', color: '#141414', fontSize: 18 }}>Harcama Seç</Text>
-                        <FontAwesomeIcon size={20} color="#e7e7e7" icon={faAngleRight} />
+                        style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, marginBottom: 25 }}>
+                        <Option selected={shareAccount.expenseType} extraStyle={{ marginRight: 10 }} />
+                        <Text style={{ fontSize: 18, fontWeight: '400', color: '#141414' }}>Harcama Yapmadan Önce Oluştur</Text>
                     </TouchableOpacity>
-                    :
-                    <>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, justifyContent: 'space-between' }}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Option extraStyle={{ marginRight: 10 }} selected={true} />
-                                <Text style={{ fontWeight: '400', color: '#141414', fontSize: 18 }}>Harcama Seç</Text>
-                            </View>
-                            <TouchableOpacity
-                                onPress={clearExpenses}
-                                activeOpacity={.7}
-                                style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ color: '#D63333', fontWeight: 'bold', fontSize: 15, paddingRight: 5 }}>Kaldır</Text>
-                                <FontAwesomeIcon icon={faCircleXmark} color="#D63333" size={18} />
-                            </TouchableOpacity>
-                        </View>
-                        {
-                            selectedExpense.map((item) => {
-                                return <CostCard
-                                    key={item.id}
-                                    costCategory={item.category}
-                                    costName={item.name}
-                                    costDate={new Date()}
-                                    processPrice={"100,00"}
-                                    processType={false}
-                                />
-                            })
-                        }
-                    </>
-            }
-            <TouchableOpacity
-                onPress={() => {
-                    if (!shareAccount.expenseType) {
-                        clearExpenses();
-                    }
-                    dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, expenseType: !shareAccount.expenseType } })
-                }}
-                activeOpacity={.7}
-                style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
-                <Option selected={shareAccount.expenseType} extraStyle={{ marginRight: 10 }} />
-                <Text style={{ fontSize: 18, fontWeight: '400', color: '#141414' }}>Harcama Yapmadan Önce Oluştur</Text>
-            </TouchableOpacity>
+                </View>
+            </ScrollView>
+            <View style={footerButonStyles.footerButonContainer}>
+                <Button
+                    onPress={goButon}
+                    activeOpacity={.7}
+                    butonStyle={{ marginBottom: 20, backgroundColor: '#3D21A2' }}
+                    textStyle={{ color: '#fff' }}
+                    title="Devam Et"
+                />
+                <Button
+                    activeOpacity={.7}
+                    butonStyle={{ marginBottom: 20 }}
+                    title="Vazgeç"
+                />
+            </View>
         </View>
     )
 }
@@ -138,6 +159,8 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         marginLeft: 10, marginRight: 10,
+
+        flex: 1,
     },
     headerTitle: {
         marginTop: 20, marginBottom: 30,
@@ -168,10 +191,10 @@ const styles = StyleSheet.create({
         left: 15, top: 5,
     },
     textInput: {
-        height: 50,
+        height: Platform.OS === 'ios' ? 50 : 60,
         borderWidth: 1, borderColor: '#e7e7e7',
         borderRadius: 10,
-        paddingTop: 15,
+        paddingTop: Platform.OS === "ios" ? 15 : 21,
         paddingLeft: 15, paddingRight: 50,
         fontSize: 16,
         color: '#141414',

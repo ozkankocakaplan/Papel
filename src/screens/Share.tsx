@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, ScrollView, Dimensions, Platform } from 'react-native'
 
 import BackgroundContainer from '../components/BackgroundContainer'
 import Button from '../components/Button'
@@ -161,35 +161,49 @@ const MyCreated = (props: { navigation: any, count: number }) => {
                 />
             </View>
             <View style={{ flex: 3, zIndex: -1, elevation: -1, position: 'relative' }}>
-                <ScrollView
-                    contentInset={{ bottom: 70 }}
-                    style={{ padding: 5 }}
-                    showsHorizontalScrollIndicator={false}
-                    showsVerticalScrollIndicator={false}
-                >
-                    <ShareCard
-                        cardType='MyCreated'
-                        isSuccess={false}
-                        onPress={() => props.navigation.navigate('ShareDetails', { shareID: 1 })}
-                        activeOpacity={.7}
-                        title="Altın Günü Yemeği"
-                        totalBalance={"381,00"}
-                        availableBalance="127,00"
-                        progressBar={.6}
-                        isPaid={false}
-                    />
-                    <ShareCard
-                        cardType='MyCreated'
-                        isSuccess={true}
-                        onPress={() => props.navigation.navigate('ShareDetails', { shareID: 2 })}
-                        activeOpacity={.7}
-                        title="Altın Günü Yemeği"
-                        totalBalance={"381,00"}
-                        availableBalance="127,00"
-                        progressBar={.6}
-                        isPaid={true}
-                    />
-                </ScrollView>
+                <View style={{ height: Platform.OS === "ios" ? "75%" : "60%" }}>
+                    <ScrollView
+
+                        nestedScrollEnabled={true}
+                        style={{ padding: 5, }}
+                        showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
+                    >
+                        <ShareCard
+                            cardType='MyCreated'
+                            isSuccess={false}
+                            onPress={() => props.navigation.navigate('ShareDetails', { shareID: 1 })}
+                            activeOpacity={.7}
+                            title="Altın Günü Yemeği"
+                            totalBalance={"381,00"}
+                            availableBalance="127,00"
+                            progressBar={.6}
+                            isPaid={false}
+                        />
+                        <ShareCard
+                            cardType='MyCreated'
+                            isSuccess={true}
+                            onPress={() => props.navigation.navigate('ShareDetails', { shareID: 2 })}
+                            activeOpacity={.7}
+                            title="Altın Günü Yemeği"
+                            totalBalance={"381,00"}
+                            availableBalance="127,00"
+                            progressBar={.6}
+                            isPaid={true}
+                        />
+                        <ShareCard
+                            cardType='MyCreated'
+                            isSuccess={true}
+                            onPress={() => props.navigation.navigate('ShareDetails', { shareID: 2 })}
+                            activeOpacity={.7}
+                            title="Altın Günü Yemeği"
+                            totalBalance={"381,00"}
+                            availableBalance="127,00"
+                            progressBar={.6}
+                            isPaid={true}
+                        />
+                    </ScrollView>
+                </View>
             </View>
         </View>
     )

@@ -3,30 +3,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 
-const DropDown = (props: { title: string, data: any, selectedData: any, height?: number, handleChangeData: (item: any) => void }) => {
+const AccountDropDown = (props: { data: any, selectedData: any, handleChangeData: (item: any) => void }) => {
 
     const [dropDownShow, setDropDownShow] = useState<boolean>(false);
     return (
-        <View style={styles.container}>
+        <View style={{ zIndex: 12, elevation: 12, }}>
             <TouchableOpacity
                 onPress={() => setDropDownShow(!dropDownShow)}
                 activeOpacity={.7}
                 style={styles.filtreDropDown}>
-                {
-                    props.selectedData.length === 0 ?
-                        <Text style={styles.filtreText}>{props.title}</Text>
-                        :
-                        <View style={{ flexDirection: 'column' }}>
-                            <Text style={styles.selectedText1}>{props.title}</Text>
-                            <Text style={styles.selectedText2}>{props.selectedData}</Text>
-                        </View>
-                }
-
-                <FontAwesomeIcon style={styles.filtreIcon} color="#3D21A2" icon={faAngleDown} />
+                <Text style={styles.selectedText2}>{props.selectedData}</Text>
+                <FontAwesomeIcon style={styles.filtreIcon} size={20} color="#fff" icon={faAngleDown} />
             </TouchableOpacity>
             {
                 dropDownShow &&
-                <View style={{ ...styles.dropDownContainer, top: props.height ? props.height : 45 }}>
+                <View style={styles.dropDownContainer}>
                     {
                         props.data.map((item: any) => {
                             return <TouchableOpacity
@@ -57,36 +48,26 @@ const DropDown = (props: { title: string, data: any, selectedData: any, height?:
 
     )
 }
-export default DropDown;
+export default AccountDropDown;
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-
-    },
     filtreDropDown: {
-        fontSize: 14,
-        color: '#727272',
         fontWeight: '500',
         borderRadius: 10,
-        borderWidth: 1,
-        flex: 1,
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-        borderColor: '#e7e7e7',
 
     },
     dropDownContainer: {
-        borderTopLeftRadius: 10, borderTopRightRadius: 10,
-        borderBottomRightRadius: 5, borderBottomLeftRadius: 5,
+
         backgroundColor: '#fff',
         position: 'absolute',
-        top: 45,
+        top: 30, left: 0, right: 0,
         shadowColor: 'rgba(0, 0, 0, 0.2)',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 10,
         shadowRadius: 3.14,
-        width: '100%',
+
     },
     dropDownItem: {
         flexDirection: 'row',
@@ -98,10 +79,7 @@ const styles = StyleSheet.create({
         fontWeight: '400'
     },
     filtreText: {
-        color: '#141414',
-        fontWeight: 'bold',
-        fontSize: 14,
-        paddingLeft: 20
+        color: '#fff', fontWeight: 'bold', lineHeight: 24, fontSize: 20,
     },
     filtreIcon: {
         paddingRight: 40
@@ -114,9 +92,9 @@ const styles = StyleSheet.create({
     },
     selectedText2: {
         paddingLeft: 10,
-        color: '#141414',
-        fontSize: 15,
-        fontWeight: '400'
+        color: '#fff',
+        fontSize: 20,
+        fontWeight: 'bold'
     },
 
 

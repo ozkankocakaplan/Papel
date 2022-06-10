@@ -1,36 +1,28 @@
 import React from 'react'
 import moment from 'moment-with-locales-es6'
-import { StyleSheet, View, Text, Image, ScrollView } from 'react-native'
+import { StyleSheet, View, Text, Image, ScrollView, Dimensions, Platform } from 'react-native'
 moment.locale('tr')
-const dumpData = [1, 2, 3, 4, 5, 6, 7]
+const dumpData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 export default function LastAction() {
     return (
         <View>
-            <Text style={styles.lastActionText}>Son Hareketler</Text>
 
-            <ScrollView
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                contentInset={{ bottom: 27 * dumpData.length }}
-            >
-                {
-                    dumpData.map((item) => {
-                        return <ActionCard
-                            key={item}
-                            userName='Cansu Ural'
-                            processName='Giden Transfer'
-                            processPrice={"100,00"}
-                            processDate={new Date()}
-                            processType={true}
-                        />
-                    })
-                }
-            </ScrollView>
-
+            {
+                dumpData.map((item) => {
+                    return <ActionCard
+                        key={item}
+                        userName='Cansu Ural'
+                        processName='Giden Transfer'
+                        processPrice={item}
+                        processDate={new Date()}
+                        processType={true}
+                    />
+                })
+            }
         </View>
     )
 }
-const ActionCard = (props: { userImage?: string, userName: string, processName: string, processPrice: any, processType: boolean, processDate: Date }) => {
+export const ActionCard = (props: { userImage?: string, userName: string, processName: string, processPrice: any, processType: boolean, processDate: Date }) => {
     return (
         <View style={styles.cardContainer}>
             <View style={styles.userInfo}>

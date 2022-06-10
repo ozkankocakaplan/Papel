@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { faSearch, faShoppingBasket } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
+import { Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux';
 
 import { costCardStyles } from './ShareDetails'
@@ -93,7 +93,11 @@ export default function Expenses(props: any) {
                             data={["Tümü"]} />
                     </View>
                 </View>
-                <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ marginLeft: 15, marginRight: 15 }} contentInset={{ bottom: 10 }}>
+                <ScrollView
+
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ marginLeft: 15, marginRight: 15 }} contentInset={{ bottom: 10 }}>
                     {
                         dumpDate.map((item) => {
                             return <View key={new Date(item).getDate()}>
@@ -141,6 +145,7 @@ export default function Expenses(props: any) {
 }
 const styles = StyleSheet.create({
     footerButonContainer: {
+        height: Platform.OS === "android" ? 150 : 100,
         margin: -10,
         padding: 15,
         backgroundColor: '#fff',

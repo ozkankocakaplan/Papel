@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, TouchableOpacity, View, Text, ScrollView, Image } from 'react-native'
+import { StyleSheet, TouchableOpacity, View, Text, ScrollView, Image, Dimensions, Platform } from 'react-native'
 import { faCircleMinus, faInfoCircle, faPaperPlane, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
@@ -9,137 +9,8 @@ import Header from '../components/Header'
 import QuickProcess, { QuickProcessHeader } from '../components/QuickProcess'
 import LastAction from '../components/LastAction'
 import MyCards from '../components/MyCards'
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
-export default function Home(props: any) {
-    const sheetRef = useRef<BottomSheet>(null);
-    const [blur, setBlur] = useState<boolean>(false);
-    const snapPoints = ["45%", "70%"];
-    const [isItVerifed, setIsItVerifed] = useState<boolean>(true);
-    useEffect(() => {
-        props.navigation.addListener('focus', () => {
-            // do something
-        })
-    }, [])
-    const ShortCut = () => {
-        return (
-            <View style={styles.shortCutContainer}>
-                <TouchableOpacity
-                    activeOpacity={.7}
-                    style={styles.shortCutButon}>
-                    <FontAwesomeIcon icon={faCircleMinus} color="#fff" size={20} />
-                    <Text style={styles.shortCutButonText}>Çek</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    activeOpacity={.7}
-                    style={styles.shortCutButon}>
-                    <FontAwesomeIcon icon={faPaperPlane} color="#fff" size={20} />
-                    <Text style={styles.shortCutButonText}>Gönder</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    activeOpacity={.7}
-                    style={styles.shortCutButon}>
-                    <FontAwesomeIcon icon={faPlusCircle} color="#fff" size={20} />
-                    <Text style={styles.shortCutButonText}>Talep Et</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    activeOpacity={.7}
-                    style={styles.shortCutButon}>
-                    <FontAwesomeIcon icon={faPlusCircle} color="#fff" size={20} />
-                    <Text style={styles.shortCutButonText}>Yatır</Text>
-                </TouchableOpacity>
-            </View>
-        )
-    }
-    return (
-        <BackgroundContainer>
-            <Header goNotification={() => props.navigation.navigate('Notification')} />
-            <ScrollView contentContainerStyle={{ flex: 1 }} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-                {
-                    isItVerifed ?
-                        <View style={{ marginTop: 10 }}>
-                            <BalanceInfo balance={"1.136,97"} body="TOPLAM BAKİYE" />
-                            <ShortCut />
-                            <MyCards />
-                        </View>
-                        :
-                        <>
-                            <UnverifedAccountInfo />
-                            <BalanceInfo balance={"20,00"} body="TOPLAM BAKİYE" />
-                            <NotFoundCardInfo />
-                        </>
-                }
-            </ScrollView>
-            {
-                isItVerifed ?
-                    <BottomSheet
-                        containerStyle={{ zIndex: 11, position: 'relative' }}
-                        ref={sheetRef}
-                        enablePanDownToClose={false}
-                        snapPoints={snapPoints}
-                        onChange={(state) => {
-                            if (state === 0) {
-                                setBlur(false)
-                            }
-                            else {
-                                setBlur(true)
-                            }
-
-                        }}
-                    >
-                        <BottomSheetView style={{ margin: 10 }} >
-                            <QuickProcessHeader />
-                            <QuickProcess />
-                            <LastAction />
-                        </BottomSheetView>
-                    </BottomSheet>
-                    :
-                    <Container valueHeight={2.3}>
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-                            <Image source={require('../../images/creditcard.png')} />
-                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#141414', marginTop: 30, marginBottom: 70, }}>Henüz burada gösterilecek bir şey yok!</Text>
-                        </View>
-                    </Container>
-
-            }
-            {blur && <BackgroundBlur />}
-        </BackgroundContainer >
-    )
-}
-
-const UnverifedAccountInfo = () => {
-    return (
-        <View style={styles.unverifedAccountInfoContainer}>
-            <View style={{ flexDirection: 'column', marginLeft: 15, marginRight: 15, marginTop: 15, marginBottom: 20 }}>
-                <View style={{ flexDirection: 'row' }}>
-                    <FontAwesomeIcon icon={faInfoCircle} color="#fff" />
-                    <Text style={styles.infoText}>Hesap Doğrulaması Gerekli!</Text>
-                </View>
-                <View style={{ marginLeft: 25, marginTop: 5 }}>
-                    <Text style={styles.infoBodyText}>
-                        Papel hesabını kullanabilmek için öncelikle üyeliğini doğrulaman gerekiyor.
-                    </Text>
-                </View>
-            </View>
-
-            <TouchableOpacity
-                activeOpacity={.7}
-                style={styles.confirmButon}>
-                <Text style={styles.confirmText}>Üyeliğini Doğrula</Text>
-            </TouchableOpacity>
-        </View>
-    )
-}
-const NotFoundCardInfo = () => {
-    return (
-        <View style={styles.notFoundCardInfoContainer}>
-            <Text style={styles.notFoundCardTitle}>Henüz bir kartın bulunmuyor!</Text>
-            <Text style={styles.notFoundCardBody}>Hesap doğrulaması ardından hemen kart başvurusu yapabilir ve Papel ayrıcalıklarından yararlanabilirsin.</Text>
-        </View>
-    )
-}
-
-
-
+import BottomSheet, { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet'
+//#region style
 const styles = StyleSheet.create({
     notFoundCardInfoContainer: {
         height: 85,
@@ -233,15 +104,6 @@ const styles = StyleSheet.create({
     },
 
 })
-
-export const BalanceInfo = (props: { balance: any, body: string }) => {
-    return (
-        <View style={balanceStyles.container}>
-            <Text style={balanceStyles.balanceText}>{`₺${props.balance}`}</Text>
-            <Text style={balanceStyles.balanceInfoText}>{props.body}</Text>
-        </View>
-    )
-}
 const balanceStyles = StyleSheet.create({
     container: {
         height: 55,
@@ -258,9 +120,159 @@ const balanceStyles = StyleSheet.create({
     balanceInfoText: {
         fontSize: 14,
         fontWeight: '500',
-        lineHeight: 20,
+        lineHeight: 28,
         color: '#BDA7F5',
         textTransform: 'uppercase',
 
     }
 });
+//#endregion
+
+
+export default function Home(props: any) {
+    const sheetRef = useRef<BottomSheet>(null);
+    const [blur, setBlur] = useState<boolean>(false);
+    const snapPoints = ["45%", "70%"];
+    const [isItVerifed, setIsItVerifed] = useState<boolean>(true);
+    useEffect(() => {
+        props.navigation.addListener('focus', () => {
+            // do something
+        })
+    }, [])
+    return (
+        <BackgroundContainer>
+            <Header
+                goSearch={() => props.navigation.navigate('Account')}
+                goAccount={() => props.navigation.navigate('Accounts')}
+                goNotification={() => props.navigation.navigate('Notification')}
+            />
+            <ScrollView contentContainerStyle={{ flex: 1 }} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                {
+                    isItVerifed ?
+                        <View style={{ marginTop: 10 }}>
+                            <BalanceInfo balance={"1.136,97"} body="TOPLAM BAKİYE" />
+                            <ShortCut />
+                            <MyCards />
+                        </View>
+                        :
+                        <>
+                            <UnverifedAccountInfo />
+                            <BalanceInfo balance={"20,00"} body="TOPLAM BAKİYE" />
+                            <NotFoundCardInfo />
+                        </>
+                }
+            </ScrollView>
+            {
+                isItVerifed ?
+                    <BottomSheet
+                        containerStyle={{ zIndex: 11, position: 'relative' }}
+
+                        ref={sheetRef}
+                        enablePanDownToClose={false}
+                        snapPoints={snapPoints}
+                        onChange={(state) => {
+                            if (state === 0) {
+                                setBlur(false)
+                            }
+                            else {
+                                setBlur(true)
+                            }
+
+                        }}
+                    >
+                        <BottomSheetView style={{ marginLeft: 10, marginRight: 10 }}>
+                            <QuickProcessHeader />
+                            <QuickProcess />
+                        </BottomSheetView>
+                        <View style={{ height: Platform.OS === "android" ? Dimensions.get('screen').height / 3.5 : Dimensions.get('screen').height / 2.5 }}>
+                            <BottomSheetScrollView
+                                showsHorizontalScrollIndicator={false}
+                                showsVerticalScrollIndicator={false}
+                                style={{ marginLeft: 10, marginRight: 10 }} >
+                                <LastAction />
+                            </BottomSheetScrollView>
+                        </View>
+                    </BottomSheet>
+                    :
+                    <Container valueHeight={2.3}>
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+                            <Image source={require('../../images/creditcard.png')} />
+                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#141414', marginTop: 30, marginBottom: 70, }}>Henüz burada gösterilecek bir şey yok!</Text>
+                        </View>
+                    </Container>
+
+            }
+            {blur && <BackgroundBlur />}
+        </BackgroundContainer >
+    )
+}
+export const ShortCut = () => {
+    return (
+        <View style={styles.shortCutContainer}>
+            <TouchableOpacity
+                activeOpacity={.7}
+                style={styles.shortCutButon}>
+                <FontAwesomeIcon icon={faCircleMinus} color="#fff" size={20} />
+                <Text style={styles.shortCutButonText}>Çek</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                activeOpacity={.7}
+                style={styles.shortCutButon}>
+                <FontAwesomeIcon icon={faPaperPlane} color="#fff" size={20} />
+                <Text style={styles.shortCutButonText}>Gönder</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                activeOpacity={.7}
+                style={styles.shortCutButon}>
+                <FontAwesomeIcon icon={faPlusCircle} color="#fff" size={20} />
+                <Text style={styles.shortCutButonText}>Talep Et</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                activeOpacity={.7}
+                style={styles.shortCutButon}>
+                <FontAwesomeIcon icon={faPlusCircle} color="#fff" size={20} />
+                <Text style={styles.shortCutButonText}>Yatır</Text>
+            </TouchableOpacity>
+        </View>
+    )
+}
+const UnverifedAccountInfo = () => {
+    return (
+        <View style={styles.unverifedAccountInfoContainer}>
+            <View style={{ flexDirection: 'column', marginLeft: 15, marginRight: 15, marginTop: 15, marginBottom: 20 }}>
+                <View style={{ flexDirection: 'row' }}>
+                    <FontAwesomeIcon icon={faInfoCircle} color="#fff" />
+                    <Text style={styles.infoText}>Hesap Doğrulaması Gerekli!</Text>
+                </View>
+                <View style={{ marginLeft: 25, marginTop: 5 }}>
+                    <Text style={styles.infoBodyText}>
+                        Papel hesabını kullanabilmek için öncelikle üyeliğini doğrulaman gerekiyor.
+                    </Text>
+                </View>
+            </View>
+
+            <TouchableOpacity
+                activeOpacity={.7}
+                style={styles.confirmButon}>
+                <Text style={styles.confirmText}>Üyeliğini Doğrula</Text>
+            </TouchableOpacity>
+        </View>
+    )
+}
+const NotFoundCardInfo = () => {
+    return (
+        <View style={styles.notFoundCardInfoContainer}>
+            <Text style={styles.notFoundCardTitle}>Henüz bir kartın bulunmuyor!</Text>
+            <Text style={styles.notFoundCardBody}>Hesap doğrulaması ardından hemen kart başvurusu yapabilir ve Papel ayrıcalıklarından yararlanabilirsin.</Text>
+        </View>
+    )
+}
+
+export const BalanceInfo = (props: { balance: any, body: string }) => {
+    return (
+        <View style={balanceStyles.container}>
+            <Text style={balanceStyles.balanceText}>{`₺${props.balance}`}</Text>
+            <Text style={balanceStyles.balanceInfoText}>{props.body}</Text>
+        </View>
+    )
+}

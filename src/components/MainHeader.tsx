@@ -7,17 +7,18 @@ interface ButtonProps {
     title: string,
     icon1?: any,
     icon2?: any,
+    titleStyle?: any,
     leftonPress?: () => void,
     rightonPress?: () => void,
 }
 
-const MainHeader: React.FC<ButtonProps> = ({ title, icon1, icon2, leftonPress, rightonPress }) => {
+const MainHeader: React.FC<ButtonProps> = ({ title, icon1, icon2, titleStyle, leftonPress, rightonPress }) => {
     return (
         <View style={styles.container}>
             {leftonPress != null && <TouchableOpacity onPress={leftonPress} style={styles.iconLeftContainer}>
                 <FontAwesomeIcon icon={icon1 === undefined ? faAngleLeft : icon1} color={'#fff'} size={35} />
             </TouchableOpacity>}
-            <Text style={styles.titleText}>{title}</Text>
+            <Text style={[styles.titleText, titleStyle]}>{title}</Text>
             {rightonPress != null && <TouchableOpacity onPress={rightonPress} style={styles.iconRightContainer}>
                 <FontAwesomeIcon icon={icon2 === undefined ? faGear : icon2} color={'#fff'} size={28} />
             </TouchableOpacity>}

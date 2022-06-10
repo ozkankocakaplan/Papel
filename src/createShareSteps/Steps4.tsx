@@ -1,28 +1,49 @@
 import React from 'react'
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import { useSelector } from 'react-redux'
 import { AppState } from '../store'
 import { UserCard } from './Steps2'
 import { CostCard } from '../screens/ShareDetails'
-export default function Steps4(props: { navigation: any, handleFormCheck: (data: boolean) => void }) {
+import { footerButonStyles } from '../screens/CreateShare'
+import Button from '../components/Button'
+export default function Steps4(props: { navigation: any, goStep: () => void, handleGoStep?: (data: number) => void }) {
     const { shareAccount, selectedExpense } = useSelector((state: AppState) => state.expenses)
     return (
         <View style={styles.container}>
             <Text style={styles.headerTitle}>Bilgileri onaylamanız halinde bölüş hesabı oluşturulacaktır.</Text>
-            <ShareSummary type='EDIT' />
+            <ScrollView
+                key={"currentStep"}
+                showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentInset={{ bottom: 30 }}>
+                <ShareSummary type='EDIT' goStep={props.handleGoStep} />
+            </ScrollView>
+            <View style={footerButonStyles.footerButonContainer}>
+                <Button
+                    onPress={props.goStep}
+                    activeOpacity={.7}
+                    butonStyle={{ marginBottom: 20, backgroundColor: '#3D21A2' }}
+                    textStyle={{ color: '#fff' }}
+                    title="Devam Et"
+                />
+                <Button
+                    activeOpacity={.7}
+                    butonStyle={{ marginBottom: 20 }}
+                    title="Vazgeç"
+                />
+            </View>
         </View>
     )
 }
-export const ShareSummary = (props: { type: 'EDIT' | 'VIEW' }) => {
+export const ShareSummary = (props: { type: 'EDIT' | 'VIEW', goStep?: (step: number) => void }) => {
     const { shareAccount, selectedExpense } = useSelector((state: AppState) => state.expenses)
     return (
         <View style={styles.infoContainer}>
             <View style={styles.infoHeader}>
                 <Text style={styles.infoTitle}>Bölüştür Bilgileri</Text>
                 {props.type === 'EDIT' && <TouchableOpacity
+                    onPress={() => props.goStep && props.goStep(0)}
                     activeOpacity={.7}
                     style={styles.infoHeaderRow}>
                     <FontAwesomeIcon style={styles.infoEditIcon} icon={faPencilAlt} color="#3D21A2" />
@@ -63,6 +84,7 @@ export const ShareSummary = (props: { type: 'EDIT' | 'VIEW' }) => {
             <View style={[styles.infoHeader, { marginTop: 25 }]}>
                 <Text style={styles.infoTitle}>Kişi Seçimi</Text>
                 {props.type === 'EDIT' && <TouchableOpacity
+                    onPress={() => props.goStep && props.goStep(1)}
                     activeOpacity={.7}
                     style={styles.infoHeaderRow}>
                     <FontAwesomeIcon style={styles.infoEditIcon} icon={faPencilAlt} color="#3D21A2" />
@@ -80,6 +102,7 @@ export const ShareSummary = (props: { type: 'EDIT' | 'VIEW' }) => {
             <View style={[styles.infoHeader, { marginTop: 25 }]}>
                 <Text style={styles.infoTitle}>Ödeme Bilgileri</Text>
                 {props.type === 'EDIT' && <TouchableOpacity
+                    onPress={() => props.goStep && props.goStep(2)}
                     activeOpacity={.7}
                     style={styles.infoHeaderRow}>
                     <FontAwesomeIcon style={styles.infoEditIcon} icon={faPencilAlt} color="#3D21A2" />
@@ -95,12 +118,12 @@ export const ShareSummary = (props: { type: 'EDIT' | 'VIEW' }) => {
                 <Text style={[styles.mainSubTitle, { marginTop: 20 }]}>HARCAMA LİMİTİ</Text>
                 <Text style={styles.priceText}>₺{shareAccount.totalPrice.masked}</Text>
             </View>
-
-        </View >
+        </View>
     )
 }
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         flexDirection: 'column',
         marginLeft: 10, marginRight: 10,
     },
@@ -117,6 +140,7 @@ const styles = StyleSheet.create({
         borderWidth: 1, borderColor: '#e7e7e7',
         borderRadius: 10,
         padding: 15,
+        marginBottom: Platform.OS == "android" ? 25 : 0
     },
     infoHeader: {
         flexDirection: 'row',

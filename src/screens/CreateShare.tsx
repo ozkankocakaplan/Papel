@@ -1,6 +1,6 @@
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import React, { useState, useCallback } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { Dimensions, Platform, ScrollView, StyleSheet, View } from 'react-native'
 import BackgroundContainer from '../components/BackgroundContainer'
 import Button from '../components/Button'
 import Container from '../components/Container'
@@ -20,13 +20,13 @@ export default function CreateShare(props: any) {
     const RenderStep = () => {
         switch (currentStep) {
             case 0:
-                return <Steps1 handleFormCheck={(data) => setStepFormCheck({ ...stepFormCheck, step1: data })} navigation={props.navigation} />;
+                return <Steps1 goStep={() => setCurrentStep(1)} navigation={props.navigation} />;
             case 1:
-                return <Steps2 handleFormCheck={(data) => setStepFormCheck({ ...stepFormCheck, step2: data })} navigation={props.navigation} />;
+                return <Steps2 goStep={() => setCurrentStep(2)} navigation={props.navigation} />;
             case 2:
-                return <Steps3 handleFormCheck={(data) => setStepFormCheck({ ...stepFormCheck, step3: data })} navigation={props.navigation} />;
+                return <Steps3 goStep={() => setCurrentStep(3)} navigation={props.navigation} />;
             case 3:
-                return <Steps4 handleFormCheck={(data) => setStepFormCheck({ ...stepFormCheck, step4: data })} navigation={props.navigation} />;
+                return <Steps4 goStep={() => setCurrentStep(4)} handleGoStep={(data: number) => editGoStep(data)} navigation={props.navigation} />;
             case 4:
                 return <Steps5 navigation={props.navigation} />;
             default:
@@ -46,6 +46,9 @@ export default function CreateShare(props: any) {
         if (currentStep === 3) {
             setCurrentStep(4);
         }
+    }
+    const editGoStep = (stepIndex: number) => {
+        setCurrentStep(stepIndex);
     }
     const goBack = () => {
         if (currentStep === 3) {
@@ -76,12 +79,14 @@ export default function CreateShare(props: any) {
             }
             <Container valueHeight={1.16}>
                 {currentStep !== 4 && <HeaderTabs HeaderTabList={["Bölüştür Bilgileri", "Kişi Seç", "Ödeme Bilgileri", "Özet"]} currentTabIndex={currentStep} />}
-                <ScrollView
+                {/* <ScrollView
                     key={"currentStep"}
                     showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentInset={{ bottom: 30 }}>
-                    {RenderStep()}
-                </ScrollView>
-                {currentStep !== 4 && <View style={styles.footerButonContainer}>
+                   
+
+                </ScrollView> */}
+                {RenderStep()}
+                {/* {currentStep !== 4 && <View style={styles.footerButonContainer}>
                     <Button
                         onPress={goStep}
                         activeOpacity={.7}
@@ -94,15 +99,18 @@ export default function CreateShare(props: any) {
                         butonStyle={{ marginBottom: 20 }}
                         title="Vazgeç"
                     />
-                </View>}
+                </View>} */}
+
             </Container>
 
         </BackgroundContainer>
     )
 }
-const styles = StyleSheet.create({
+export const footerButonStyles = StyleSheet.create({
     footerButonContainer: {
-        margin: -10,
+
+        height: Platform.OS === "ios" ? 160 : 230,
+        margin: -20,
         padding: 15,
         backgroundColor: '#fff',
         shadowColor: '#000',

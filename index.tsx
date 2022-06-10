@@ -6,12 +6,14 @@ import { name as appName } from './app.json';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './src/store/index';
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 const store = createStore(rootReducer);
 const Papel = () => {
     return (
         <Provider store={store}>
-            <App />
+            <GestureHandlerRootView style={{ flex: 1 }}>
+                <App />
+            </GestureHandlerRootView>
         </Provider>
     )
 }

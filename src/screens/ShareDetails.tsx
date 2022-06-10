@@ -2,7 +2,7 @@ import { faAngleRight, faCheck, faShoppingBasket } from '@fortawesome/free-solid
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import moment from 'moment-with-locales-es6';
 import React from 'react'
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
+import { Dimensions, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
 import SimpleGradientProgressbarView from 'react-native-simple-gradient-progressbar-view'
 import BackgroundContainer from '../components/BackgroundContainer'
 import Container from '../components/Container'
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     shareDetailsCol1: {
+        flex: 1,
         padding: 10
     },
     col1Title: {
@@ -107,12 +108,13 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     costActionButonContainer: {
-        marginTop: 40,
         flexDirection: 'column',
+        marginBottom: 50,
     },
     costActionButons: {
         flexDirection: 'column',
-        paddingBottom: 15, paddingTop: 15, borderBottomColor: '#e7e7e7', borderBottomWidth: 1,
+        paddingBottom: 15, paddingTop: 15,
+        borderBottomColor: '#e7e7e7', borderBottomWidth: 1,
     },
     costActionButonText: {
         color: '#D63333',
@@ -191,8 +193,16 @@ export default function ShareDetails(props: any) {
                 title='Bölüş Hesabı Detayı'
                 leftonPress={() => props.navigation.goBack()}
             />
+
             <Container valueHeight={1.16}>
-                <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }} contentInset={{ bottom: 20 }}>
+
+                <ScrollView
+                    style={{ height: Dimensions.get('screen').height }}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    nestedScrollEnabled={true}
+                    contentInset={{ bottom: 50 }}
+                >
                     <View style={styles.shareDetailsCol1}>
                         <Text style={styles.col1Title}>Doğum Günü Yemeği</Text>
                         <Text style={styles.col2Title}>Bölüş Hesap Tutarı</Text>
@@ -230,6 +240,7 @@ export default function ShareDetails(props: any) {
                             processPrice={"100,00"}
                             processType={true}
                         />
+
                         <CostCard
                             costCategory={["Giyim", "Aksesuar"]}
                             costName='Amazon'
@@ -256,12 +267,43 @@ export default function ShareDetails(props: any) {
                             isPaid={true}
                             userName='Zeki Aslan'
                         />
+                        <UserCard
+                            activeOpacity={.7}
+                            isMe={false}
+                            isPaid={true}
+                            userName='Zeki Aslan'
+                        />
+                        <UserCard
+                            activeOpacity={.7}
+                            isMe={false}
+                            isPaid={true}
+                            userName='Zeki Aslan'
+                        />
+                        <UserCard
+                            activeOpacity={.7}
+                            isMe={false}
+                            isPaid={true}
+                            userName='Zeki Aslan'
+                        />
+                        <UserCard
+                            activeOpacity={.7}
+                            isMe={false}
+                            isPaid={true}
+                            userName='Zeki Aslan'
+                        />
+                        <UserCard
+                            activeOpacity={.7}
+                            isMe={false}
+                            isPaid={true}
+                            userName='Zeki Aslan'
+                        />
                         <CostActionButons />
                     </View>
 
                 </ScrollView>
 
             </Container>
+
         </BackgroundContainer>
     )
 }

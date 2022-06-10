@@ -97,6 +97,7 @@ const shareCardstyles = StyleSheet.create({
         shadowOpacity: 10,
         shadowRadius: 3.14,
         flexDirection: 'column',
+        elevation: 5,
     },
     cardHeader: {
         flexDirection: 'row',

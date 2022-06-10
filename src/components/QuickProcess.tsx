@@ -2,8 +2,9 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React from 'react'
 import { FlatList, TouchableOpacity, View, Text, StyleSheet } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 
-
+const data = ["Para İste", "Abimden Para İste", "Ablamdan Para İste"];
 const QuickProcess = () => {
     const RequestButonContainer = (props: { request: string }) => {
         return (
@@ -19,16 +20,18 @@ const QuickProcess = () => {
         )
     }
     return (
-        <FlatList
-            key={"1"}
+        <ScrollView
+            style={{ marginBottom: 5 }}
+            horizontal={true}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            horizontal={true}
-            contentContainerStyle={{ marginBottom: 20 }}
-            data={["Para İste", "Abimden Para İste", "Ablamdan Para İste"]}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => <RequestButonContainer request={item} key={index} />}
-        />
+        >
+            {
+                data.map((item, index) => {
+                    return <RequestButonContainer request={item} key={index} />
+                })
+            }
+        </ScrollView>
     )
 }
 export const QuickProcessHeader = () => {
