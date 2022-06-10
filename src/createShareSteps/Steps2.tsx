@@ -89,9 +89,13 @@ export default function Steps2(props: { navigation: any, handleFormCheck: (data:
         </View>
     )
 }
-const UserCard = (props: { userName: string, userImage?: string, handleSelectUser: () => void }) => {
+export const UserCard = (props: { userName: string, userImage?: string, handleSelectUser?: () => void }) => {
     return (
-        <TouchableOpacity onPress={props.handleSelectUser}
+        <TouchableOpacity onPress={() => {
+            if (props.handleSelectUser != undefined) {
+                props.handleSelectUser();
+            }
+        }}
             activeOpacity={0.7}
             style={userCardStyles.cardContainer}>
             <View style={userCardStyles.userInfo}>

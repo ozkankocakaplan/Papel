@@ -1,11 +1,35 @@
-import { faCircleExclamation, faSearch } from '@fortawesome/free-solid-svg-icons'
+import React, { useEffect } from 'react'
+import { StyleSheet, Text, View, TextInput } from 'react-native'
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import React from 'react'
-import { StyleSheet, Text, TextInput, View } from 'react-native'
-import DropDown from '../components/DropDown'
-import { SelectedAccount } from './Steps1'
 
+import { SelectedAccount } from './Steps1'
+import CurrencyDropDown from '../components/CurrencyDropDown'
+
+
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../store'
+import actionTypes from '../store/redux/actions/actionTypes'
+import MaskInput, { createNumberMask } from 'react-native-mask-input'
+const currencyData = ["TRY", "USD", "EUR"]
 export default function Steps3(props: { navigation: any, handleFormCheck: (data: boolean) => void }) {
+    const { shareAccount } = useSelector((state: AppState) => state.expenses)
+    const dispatch = useDispatch();
+    const tlMask = createNumberMask({
+        prefix: [''],
+        delimiter: '.',
+        separator: ',',
+        precision: 2,
+    })
+    useEffect(() => {
+        if (shareAccount.totalPrice != 0) {
+            props.handleFormCheck(true);
+        }
+        else {
+            props.handleFormCheck(false);
+        }
+    }, [dispatch, shareAccount])
+
     return (
         <View style={styles.container}>
             <Text style={styles.headerTitle}>Bölüş hesabı için size para gönderecek kişileri seçin.</Text>
@@ -22,17 +46,38 @@ export default function Steps3(props: { navigation: any, handleFormCheck: (data:
                 </View>
                 <Text style={styles.orderInfoText}>Kişilerin ödeyecekleri miktarı girin.</Text>
             </View>
-            <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                <View style={{ flex: .5 }}>
-                    <DropDown title='' selectedData={"TRY"} data={["TRY"]} handleChangeData={() => console.log("a")} />
+            <View style={styles.priceContainer}>
+                <View style={{ flex: .4, borderRightWidth: 1, borderRightColor: '#e7e7e7' }}>
+                    <CurrencyDropDown title='Currency' selectedData={shareAccount.currencyFormat} data={currencyData} handleChangeData={(data) => {
+                        dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, currencyFormat: data } })
+                    }} />
                 </View>
-                <View style={{ flex: 1 }}></View>
+                <View style={{ flex: 1 }}>
+                    <Text style={styles.inputLabel}>Tutar</Text>
+                    <MaskInput
+                        style={styles.textInput}
+                        value={shareAccount.totalPrice.masked}
+                        mask={tlMask}
+                        onChangeText={(masked, unmasked) => {
+                            dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, totalPrice: { masked, unmasked } } })
+                        }}
+                    />
+                </View>
             </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    priceContainer: {
+        borderWidth: 1,
+        borderColor: '#e7e7e7',
+
+        borderRadius: 5,
+        flexDirection: 'row',
+        marginTop: 20,
+        height: 50
+    },
     container: {
         flexDirection: 'column',
         marginLeft: 10, marginRight: 10,
@@ -50,13 +95,20 @@ const styles = StyleSheet.create({
         left: 15,
         top: 12
     },
+    inputLabel: {
+        color: '#3D21A2',
+        fontSize: 13,
+        letterSpacing: 0,
+        fontWeight: '400',
+        position: 'absolute',
+        left: 15, top: 5,
+    },
     textInput: {
-        height: 40,
-        borderWidth: 1, borderColor: '#e7e7e7',
-        borderRadius: 10,
+        height: 50,
+        paddingTop: 15,
+        paddingLeft: 15, paddingRight: 50,
+        fontSize: 16,
         color: '#141414',
-        paddingLeft: 35, paddingRight: 50,
-        fontSize: 14,
         fontWeight: '400'
     },
     col1Title: {
@@ -84,5 +136,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: '400',
         paddingLeft: 5,
-    }
+    },
+
 })

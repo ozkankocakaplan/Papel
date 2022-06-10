@@ -10,13 +10,14 @@ import Steps1 from '../createShareSteps/Steps1'
 import Steps2 from '../createShareSteps/Steps2'
 import Steps3 from '../createShareSteps/Steps3'
 import Steps4 from '../createShareSteps/Steps4'
+import Steps5 from '../createShareSteps/Steps5'
 
 
 
 export default function CreateShare(props: any) {
     const [currentStep, setCurrentStep] = useState(0);
     const [stepFormCheck, setStepFormCheck] = useState({ step1: false, step2: false, step3: false, step4: false });
-    const renderStep = () => {
+    const RenderStep = () => {
         switch (currentStep) {
             case 0:
                 return <Steps1 handleFormCheck={(data) => setStepFormCheck({ ...stepFormCheck, step1: data })} navigation={props.navigation} />;
@@ -26,6 +27,8 @@ export default function CreateShare(props: any) {
                 return <Steps3 handleFormCheck={(data) => setStepFormCheck({ ...stepFormCheck, step3: data })} navigation={props.navigation} />;
             case 3:
                 return <Steps4 handleFormCheck={(data) => setStepFormCheck({ ...stepFormCheck, step4: data })} navigation={props.navigation} />;
+            case 4:
+                return <Steps5 navigation={props.navigation} />;
             default:
                 break;
         }
@@ -39,6 +42,9 @@ export default function CreateShare(props: any) {
         }
         if (currentStep === 2 && stepFormCheck.step3) {
             setCurrentStep(3);
+        }
+        if (currentStep === 3) {
+            setCurrentStep(4);
         }
     }
     const goBack = () => {
@@ -57,20 +63,25 @@ export default function CreateShare(props: any) {
     }
     return (
         <BackgroundContainer style={{ justifyContent: 'flex-end' }}>
-            <MainHeader
+            {currentStep != 4 ? <MainHeader
                 title='Bölüş Hesabı Oluştur'
                 icon2={faInfoCircle}
                 leftonPress={goBack}
                 rightonPress={() => console.log("a")}
             />
+                :
+                <MainHeader
+                    title='Bölüş Hesabı Oluştur'
+                />
+            }
             <Container valueHeight={1.16}>
-                <HeaderTabs HeaderTabList={["Bölüştür Bilgileri", "Kişi Seç", "Ödeme Bilgileri", "Özet"]} currentTabIndex={currentStep} />
+                {currentStep !== 4 && <HeaderTabs HeaderTabList={["Bölüştür Bilgileri", "Kişi Seç", "Ödeme Bilgileri", "Özet"]} currentTabIndex={currentStep} />}
                 <ScrollView
                     key={"currentStep"}
                     showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentInset={{ bottom: 30 }}>
-                    {renderStep()}
+                    {RenderStep()}
                 </ScrollView>
-                <View style={styles.footerButonContainer}>
+                {currentStep !== 4 && <View style={styles.footerButonContainer}>
                     <Button
                         onPress={goStep}
                         activeOpacity={.7}
@@ -83,7 +94,7 @@ export default function CreateShare(props: any) {
                         butonStyle={{ marginBottom: 20 }}
                         title="Vazgeç"
                     />
-                </View>
+                </View>}
             </Container>
 
         </BackgroundContainer>

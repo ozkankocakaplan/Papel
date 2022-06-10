@@ -266,10 +266,10 @@ export default function ShareDetails(props: any) {
     )
 }
 
-export const CostCard = (props: { costName: string, costCategory: string[], costDate: Date, processType: boolean, processPrice: any }) => {
+export const CostCard = (props: { costName: string, costCategory: string[], costDate: Date, processType: boolean, processPrice: any, extraStyle?: any }) => {
     let counter = 0;
     return (
-        <View style={costCardStyles.container}>
+        <View style={[costCardStyles.container, props.extraStyle]}>
             <View style={costCardStyles.userInfo}>
                 <View style={costCardStyles.iconContainer}>
                     <FontAwesomeIcon icon={faShoppingBasket} />

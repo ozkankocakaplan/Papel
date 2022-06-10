@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 
-const DropDown = (props: { title: string, data: any, selectedData: any, handleChangeData: (item: any) => void }) => {
+const CurrencyDropDown = (props: { title: string, data: any, selectedData: any, handleChangeData: (item: any) => void }) => {
 
     const [dropDownShow, setDropDownShow] = useState<boolean>(false);
     return (
@@ -12,15 +12,9 @@ const DropDown = (props: { title: string, data: any, selectedData: any, handleCh
                 onPress={() => setDropDownShow(!dropDownShow)}
                 activeOpacity={.7}
                 style={styles.filtreDropDown}>
-                {
-                    props.selectedData.length === 0 ?
-                        <Text style={styles.filtreText}>{props.title}</Text>
-                        :
-                        <View style={{ flexDirection: 'column' }}>
-                            <Text style={styles.selectedText1}>{props.title}</Text>
-                            <Text style={styles.selectedText2}>{props.selectedData}</Text>
-                        </View>
-                }
+                <View style={{ flexDirection: 'column' }}>
+                    <Text style={styles.selectedText2}>{props.selectedData}</Text>
+                </View>
 
                 <FontAwesomeIcon style={styles.filtreIcon} color="#3D21A2" icon={faAngleDown} />
             </TouchableOpacity>
@@ -57,23 +51,22 @@ const DropDown = (props: { title: string, data: any, selectedData: any, handleCh
 
     )
 }
-export default DropDown;
+export default CurrencyDropDown;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    
+
     },
     filtreDropDown: {
         fontSize: 14,
         color: '#727272',
         fontWeight: '500',
         borderRadius: 10,
-        borderWidth: 1,
+       
         flex: 1,
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-        borderColor: '#e7e7e7',
 
     },
     dropDownContainer: {
@@ -81,7 +74,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 5, borderBottomLeftRadius: 5,
         backgroundColor: '#fff',
         position: 'absolute',
-        top:45 ,
+        top: 50,
         shadowColor: 'rgba(0, 0, 0, 0.2)',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 10,
@@ -115,7 +108,7 @@ const styles = StyleSheet.create({
     selectedText2: {
         paddingLeft: 10,
         color: '#141414',
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: '400'
     },
 

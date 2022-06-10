@@ -14,6 +14,7 @@ interface ShareAccount {
     expenseType: boolean,
     personList: Array<Person>,
     totalPrice: any,
+    currencyFormat: string,
     accountSelected: object,
 }
 export interface ExpenseState {
@@ -22,7 +23,7 @@ export interface ExpenseState {
 }
 const defaultState: ExpenseState = {
     selectedExpense: Array<Expense>(),
-    shareAccount: { accountName: '', expenseType: false, personList: Array<Person>(), totalPrice: 0, accountSelected: {} }
+    shareAccount: { accountName: '', expenseType: false, personList: Array<Person>(), totalPrice: { masked: '00,00', unmasked: null }, accountSelected: {}, currencyFormat: 'TRY' }
 }
 const expensesReducer = (state: ExpenseState = defaultState, action: any) => {
     switch (action.type) {

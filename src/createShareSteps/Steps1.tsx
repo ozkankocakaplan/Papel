@@ -44,7 +44,11 @@ export default function Steps1(props: { navigation: any, handleFormCheck: (data:
                 <Text style={styles.inputLabel}>Bölüştür Hesabı Adı</Text>
                 <TextInput
                     value={shareAccount.accountName}
-                    onChangeText={(text) => dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, accountName: text } })}
+                    onChangeText={(text) => {
+                        if (text.length <= 52) {
+                            dispatch({ type: actionTypes.UPDATE_SHAREACCOUNT, payload: { ...shareAccount, accountName: text } })
+                        }
+                    }}
                     focusable={false} style={styles.textInput} />
                 <Text style={styles.inputLength}>{`${shareAccount.accountName.length}/52`}</Text>
             </View>

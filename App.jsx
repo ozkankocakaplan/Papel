@@ -15,7 +15,7 @@ const App = () => {
       <Stack.Navigator screenOptions={{
         headerShown: false,
       }}>
-        <Stack.Screen name='TabNavigator' component={TabNavigator} />
+        <Stack.Screen name='Home' component={TabNavigator} />
         <Stack.Screen name='Notification' component={Notifications} />
         <Stack.Screen name='ShareDetails' component={ShareDetails} />
         <Stack.Screen name='CreateShare' component={CreateShare} />
