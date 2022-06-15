@@ -17,6 +17,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{
         headerShown: false,
+        gestureEnabled: false
       }}>
         <Stack.Screen name='Home' component={TabNavigator} />
         <Stack.Screen name='Notification' component={Notifications} />

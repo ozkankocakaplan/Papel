@@ -1,6 +1,6 @@
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import React, { useState, useCallback } from 'react'
-import { Dimensions, Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { Dimensions, Platform, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native'
 import BackgroundContainer from '../components/BackgroundContainer'
 import Button from '../components/Button'
 import Container from '../components/Container'
@@ -75,32 +75,13 @@ export default function CreateShare(props: any) {
                 :
                 <MainHeader
                     title='Bölüş Hesabı Oluştur'
+                    titleStyle={{ fontSize: 18 }}
+                    // leftonPress={() => props.navigation.goBack()}
                 />
             }
             <Container valueHeight={1.16}>
                 {currentStep !== 4 && <HeaderTabs HeaderTabList={["Bölüştür Bilgileri", "Kişi Seç", "Ödeme Bilgileri", "Özet"]} currentTabIndex={currentStep} />}
-                {/* <ScrollView
-                    key={"currentStep"}
-                    showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentInset={{ bottom: 30 }}>
-                   
-
-                </ScrollView> */}
                 {RenderStep()}
-                {/* {currentStep !== 4 && <View style={styles.footerButonContainer}>
-                    <Button
-                        onPress={goStep}
-                        activeOpacity={.7}
-                        butonStyle={{ marginBottom: 20, backgroundColor: '#3D21A2' }}
-                        textStyle={{ color: '#fff' }}
-                        title="Devam Et"
-                    />
-                    <Button
-                        activeOpacity={.7}
-                        butonStyle={{ marginBottom: 20 }}
-                        title="Vazgeç"
-                    />
-                </View>} */}
-
             </Container>
 
         </BackgroundContainer>

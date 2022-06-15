@@ -97,6 +97,7 @@ export default function Accounts(props: any) {
         <BackgroundContainer>
             <SafeAreaView>
                 <MainHeader
+                    bgHeader={false}
                     title='Hesaplar'
                     titleStyle={{ fontSize: 18 }}
                     leftonPress={() => props.navigation.goBack()}

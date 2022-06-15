@@ -59,6 +59,7 @@ const HeaderTabs = (props: { currentTabIndex: number, HeaderTabList: any }) => {
 export default HeaderTabs;
 const styles = StyleSheet.create({
     container: {
+        
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

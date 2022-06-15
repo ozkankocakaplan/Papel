@@ -153,6 +153,7 @@ export default function Home(props: any) {
                             <BalanceInfo balance={"1.136,97"} body="TOPLAM BAKİYE" />
                             <ShortCut />
                             <MyCards />
+                            
                         </View>
                         :
                         <>
